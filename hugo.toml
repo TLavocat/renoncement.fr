@@ -39,9 +39,9 @@ Les récits sont publiés anonymement, et chaque publication participe au [tirag
 # partial renders nothing while repoID is empty. See SETUP.md, step G.
 [params.giscus]
 repo = "TLavocat/renoncement.fr"
-repoID = ""
+repoID = "R_kgDOTpXgJQ"
 category = "Commentaires"
-categoryID = ""
+categoryID = "DIC_kwDOTpXgJc4DCeaD"
 
 [menus]
 [[menus.main]]
