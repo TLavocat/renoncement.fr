@@ -1,0 +1,72 @@
+/* renoncement.fr — sky accent over PaperMod defaults.
+   PaperMod auto-bundles every file in assets/css/extended/. */
+
+:root {
+    --sky: #2b7bbf;
+    --sky-deep: #1d5e96;
+    --sky-soft: #e7f1f9;
+}
+
+.dark {
+    --sky: #6db3e8;
+    --sky-deep: #8ec5ef;
+    --sky-soft: #1c2a36;
+}
+
+/* Accent links inside content */
+.post-content a,
+.home-info .entry-content a {
+    color: var(--sky);
+    box-shadow: 0 1px 0 var(--sky);
+}
+
+.post-content a:hover,
+.home-info .entry-content a:hover {
+    color: var(--sky-deep);
+}
+
+/* Home call-to-action buttons */
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 8px 0 4px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.cta-primary {
+    background: var(--sky);
+    color: #fff;
+}
+
+.cta-primary:hover {
+    background: var(--sky-deep);
+    color: #fff;
+}
+
+.cta-secondary {
+    background: var(--sky-soft);
+    color: var(--sky-deep);
+}
+
+/* Subtle lift on list cards */
+.post-entry {
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+}
+
+.post-entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(43, 123, 191, 0.12);
+}
+
+.post-entry .entry-hint-parent,
+.first-entry .entry-header h1 {
+    color: var(--sky-deep);
+}

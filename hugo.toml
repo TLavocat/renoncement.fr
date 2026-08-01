@@ -1,0 +1,71 @@
+baseURL = "https://renoncement.fr/"
+locale = "fr-FR"
+defaultContentLanguage = "fr"
+title = "renoncement.fr"
+theme = "PaperMod"
+timeZone = "Europe/Paris"
+enableRobotsTXT = true
+
+[pagination]
+pagerSize = 10
+
+[params]
+description = "Récits de renoncement partagés par la communauté du vol libre. Renoncer à un vol n'est jamais un échec."
+defaultTheme = "auto"
+ShowReadingTime = false
+ShowShareButtons = false
+ShowPostNavLinks = true
+ShowBreadCrumbs = false
+ShowCodeCopyButtons = false
+ShowRssButtonInSectionTermList = true
+hideFooter = false
+comments = true
+mainSections = ["rex"]
+
+[params.assets]
+favicon = "/favicon.svg"
+
+[params.homeInfoParams]
+Title = "Renoncer, c'est aussi piloter"
+Content = """
+Ce site rassemble les récits de pilotes de vol libre qui ont choisi, un jour, de **ne pas voler** — ou de poser plus tôt que prévu.
+
+Chaque renoncement est une décision de pilotage à part entière. En partageant le contexte, les signaux faibles et le déclencheur de ta décision, tu aides toute la cordée à mieux reconnaître ces situations.
+
+Les récits sont publiés anonymement, et chaque publication participe au [tirage au sort annuel](/reglement/#3-tirage-au-sort) : une journée de stage SIV à gagner.
+"""
+
+# giscus (comments). Leave repoID/categoryID empty until set up — the comments
+# partial renders nothing while repoID is empty. See SETUP.md, step G.
+[params.giscus]
+repo = "TLavocat/renoncement.fr"
+repoID = ""
+category = "Commentaires"
+categoryID = ""
+
+[menus]
+[[menus.main]]
+name = "Accueil"
+url = "/"
+weight = 10
+[[menus.main]]
+name = "Tous les REX"
+url = "/rex/"
+weight = 20
+[[menus.main]]
+name = "Règlement"
+url = "/reglement/"
+weight = 30
+[[menus.main]]
+name = "Mentions légales"
+url = "/mentions-legales/"
+weight = 40
+[[menus.main]]
+name = "Partager mon REX"
+url = "https://docs.google.com/forms/d/e/1FAIpQLSeZn_A5D5QuS-GSy1GMj1vY4FjD_dC77rbGJZ6_91ig134hng/viewform"
+weight = 50
+
+[markup.goldmark.renderer]
+# Raw HTML in markdown is stripped. REX pages are generated from public form
+# submissions — flipping this to true would allow HTML/JS injection on the site.
+unsafe = false
