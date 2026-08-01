@@ -1,0 +1,23 @@
+{{- /* Override of PaperMod's home_info.html: adds the call-to-action buttons.
+       Raw HTML must live here (a maintainer-controlled layout), never in
+       markdown content — goldmark unsafe=false strips HTML from user content. */ -}}
+{{- with site.Params.homeInfoParams }}
+<article class="first-entry home-info">
+    <header class="entry-header">
+        <h1>{{ .Title | markdownify }}</h1>
+    </header>
+    <div class="entry-content md-content">
+        {{ $opts := dict "display" "block" }}
+        {{ .Content | $.Page.RenderString $opts }}
+    </div>
+    <footer class="entry-footer">
+        <div class="cta-buttons">
+            <a class="cta-button cta-primary"
+               href="https://docs.google.com/forms/d/e/1FAIpQLSeZn_A5D5QuS-GSy1GMj1vY4FjD_dC77rbGJZ6_91ig134hng/viewform"
+               rel="noopener" target="_blank">Partager mon REX</a>
+            <a class="cta-button cta-secondary" href="/reglement/">Lire le règlement</a>
+        </div>
+        {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
+    </footer>
+</article>
+{{- end -}}
