@@ -175,6 +175,29 @@ def fetch_rex_rows(sheet) -> list[dict]:
     return rows_as_dicts(values, set(REX_COLUMNS.values()), REX_WORKSHEET)
 
 
+def quarantined_ids_from_values(values: list[list[str]]) -> set[str]:
+    rows = rows_as_dicts(values, {MOD_COLUMNS["rex_id"]}, MOD_WORKSHEET)
+    if not rows:
+        return set()
+    # The Validé column is hand-typed by the maintainer (not a form question),
+    # so match it case-insensitively.
+    headers = [h.strip() for h in values[0]]
+    wanted = MOD_COLUMNS["validated"].casefold()
+    validated_header = next((h for h in headers if h.casefold() == wanted), None)
+    if validated_header is None:
+        print(
+            f"Missing '{MOD_COLUMNS['validated']}' column in worksheet "
+            f"'{MOD_WORKSHEET}'. Actual headers: {headers}",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    quarantined = set()
+    for row in rows:
+        if str(row.get(validated_header, "")).strip().upper() in TRUTHY:
+            quarantined.add(row[MOD_COLUMNS["rex_id"]].strip())
+    return quarantined
+
+
 def fetch_quarantined_ids(sheet) -> set[str]:
     try:
         worksheet = sheet.worksheet(MOD_WORKSHEET)
@@ -182,13 +205,7 @@ def fetch_quarantined_ids(sheet) -> set[str]:
         # Moderation form not created yet (SETUP.md step B): nothing quarantined.
         print(f"Worksheet '{MOD_WORKSHEET}' not found; no quarantine applied.")
         return set()
-    rows = rows_as_dicts(worksheet.get_all_values(), set(MOD_COLUMNS.values()), MOD_WORKSHEET)
-    quarantined = set()
-    for row in rows:
-        validated = str(row[MOD_COLUMNS["validated"]]).strip().upper()
-        if validated in TRUTHY:
-            quarantined.add(row[MOD_COLUMNS["rex_id"]].strip())
-    return quarantined
+    return quarantined_ids_from_values(worksheet.get_all_values())
 
 
 def _single_line(text: str) -> str:

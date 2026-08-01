@@ -256,6 +256,37 @@ class TestHeaderValidation:
         assert rows[0]["Quel était le plan de vol ?"] == ""
 
 
+class TestQuarantine:
+    HEADERS = ["Horodateur", "rex_id", "pourquoi vous le signalez ?", "validé"]
+
+    def test_lowercase_valide_header_accepted(self):
+        values = [
+            self.HEADERS,
+            ["01/08/2026 10:00:00", "aaaaaaaaaa", "spam", "TRUE"],
+            ["01/08/2026 10:01:00", "bbbbbbbbbb", "haine", ""],
+        ]
+        assert sync.quarantined_ids_from_values(values) == {"aaaaaaaaaa"}
+
+    def test_vrai_and_checkbox_true_are_truthy(self):
+        values = [
+            ["rex_id", "Validé"],
+            ["aaaaaaaaaa", "VRAI"],
+            ["bbbbbbbbbb", "FALSE"],
+            ["cccccccccc", "OUI"],
+        ]
+        assert sync.quarantined_ids_from_values(values) == {"aaaaaaaaaa", "cccccccccc"}
+
+    def test_missing_valide_column_fails_loudly(self, capsys):
+        values = [["rex_id"], ["aaaaaaaaaa"]]
+        with pytest.raises(SystemExit):
+            sync.quarantined_ids_from_values(values)
+        assert "Validé" in capsys.readouterr().err
+
+    def test_empty_tab_means_no_quarantine(self):
+        assert sync.quarantined_ids_from_values([]) == set()
+        assert sync.quarantined_ids_from_values([["rex_id", "Validé"]]) == set()
+
+
 class TestTickets:
     def test_ticket_values_follow_geometric_tranches(self):
         assert [ticket_value(n) for n in range(1, 10)] == [
