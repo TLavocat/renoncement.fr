@@ -32,8 +32,11 @@ PROTECTED = {"_index.md", "exemple.md"}
 # Moderation form report link, shown in each REX footer. Empty until the
 # moderation form exists (SETUP.md step B): the footer then shows the rex_id
 # without a link.
-REPORT_FORM_URL = ""
-REPORT_ENTRY_ID = ""  # e.g. "entry.123456789"
+REPORT_FORM_URL = (
+    "https://docs.google.com/forms/d/e/"
+    "1FAIpQLSet36j_pft9KbgyV9Jikts3eZeAvBRLKenrGkeaBK1XU0Vk0Q/viewform"
+)
+REPORT_ENTRY_ID = "entry.1217368245"
 
 TIMESTAMP_FMT = "%d/%m/%Y %H:%M:%S"  # French sheet locale
 TZ = ZoneInfo("Europe/Paris")

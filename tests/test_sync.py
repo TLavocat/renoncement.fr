@@ -110,7 +110,9 @@ class TestDates:
 
 
 class TestRenderMarkdown:
-    def test_byte_exact_output(self):
+    def test_byte_exact_output(self, monkeypatch):
+        monkeypatch.setattr(sync, "REPORT_FORM_URL", "")
+        monkeypatch.setattr(sync, "REPORT_ENTRY_ID", "")
         entry = sync.parse_row(make_raw())
         rex_id = sync.compute_rex_id(entry.timestamp_raw)
         expected = f"""---
@@ -170,7 +172,9 @@ je ne regrette pas d'être allé voir
         markdown = sync.render_markdown(sync.parse_row(raw))
         assert "…" in markdown.split("summary:")[1].split("\n")[0]
 
-    def test_footer_without_report_form(self):
+    def test_footer_without_report_form(self, monkeypatch):
+        monkeypatch.setattr(sync, "REPORT_FORM_URL", "")
+        monkeypatch.setattr(sync, "REPORT_ENTRY_ID", "")
         entry = sync.parse_row(make_raw())
         rex_id = sync.compute_rex_id(entry.timestamp_raw)
         markdown = sync.render_markdown(entry)
