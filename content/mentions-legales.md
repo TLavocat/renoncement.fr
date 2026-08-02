@@ -9,7 +9,7 @@ Ce site est édité à titre personnel et non commercial par **Thomas Lavocat**,
 
 **Directeur de la publication** : Thomas Lavocat.
 
-Contact : <thomas.lavocat+renoncement.fr@gmail.com>, ou via le [dépôt GitHub du site](https://github.com/TLavocat/renoncement.fr) (issues ou discussions).
+Contact : <a17zf0fse@mozmail.com>, ou via le [dépôt GitHub du site](https://github.com/TLavocat/renoncement.fr) (issues ou discussions).
 
 ## Hébergement
 
