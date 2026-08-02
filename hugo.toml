@@ -71,7 +71,7 @@ url = "/"
 weight = 10
 [[menus.main]]
 name = "Tous les REX"
-url = "/rex/"
+url = "/archives/"
 weight = 20
 [[menus.main]]
 name = "Règlement"
