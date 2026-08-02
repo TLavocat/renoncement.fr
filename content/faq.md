@@ -16,6 +16,10 @@ Dire « ce renoncement vaut mieux que celui-là » serait une erreur : ça place
 
 D'où le tirage au sort : chaque récit compte, aucun ne vaut « plus » qu'un autre.
 
+## Qu'est-ce qu'on perd, quand on décide de ne pas voler ?
+
+De l'ego, du temps, de l'argent, une RTT, un trajet, une négo avec ton/ta partenaire… On y laisse tous quelque chose.
+
 ## Pourquoi un lot aussi conséquent ?
 
 Pour entretenir l'envie de partager. Mon intuition : si tu sais que ce site existe, le jour où tu ne voles pas, tu peux te dire — « bon, je ne vole pas aujourd'hui, mais si je raconte mon histoire, ça me donne une chance de gagner quelque chose sur renoncement.fr ». Un petit coup de pouce pour transformer une journée frustrante en quelque chose d'utile à tous.
