@@ -32,7 +32,13 @@ from sync import (
     parse_row,
 )
 
-EMAIL_HEADER = "Adresse e-mail"
+# The form uses Google's verified email collection ("Adresse e-mail" column).
+# The first entry future-proofs a switch to an explicit optional question:
+# rows are read in this order, first non-empty value wins.
+EMAIL_HEADERS = [
+    "Adresse e-mail (tirage au sort, facultatif)",
+    "Adresse e-mail",
+]
 FIRST_DATA_ROW = 2  # sheet row 1 is the header
 
 
@@ -62,7 +68,10 @@ def eligible_participants(raw_rows: list[dict], quarantined: set[str]) -> dict[s
             continue
         if compute_rex_id(entry.timestamp_raw) in quarantined:
             continue
-        email = raw.get(EMAIL_HEADER, "").strip().lower()
+        email = next(
+            (value for header in EMAIL_HEADERS if (value := raw.get(header, "").strip().lower())),
+            "",
+        )
         if not email:
             continue
         if email not in participants:
@@ -105,7 +114,7 @@ def main() -> None:
         f"open the spreadsheet, worksheet '{REX_WORKSHEET}', ROW {winner.first_row} "
         f"(their first REX) and read the email address there."
     )
-    print("Reminder: verify flight activity (trace CFD) before awarding the prize,")
+    print("Reminder: ask for the winner's current-year FFVL (or equivalent) license,")
     print("and purge the email column one month after the draw (Règlement §3).")
 
 

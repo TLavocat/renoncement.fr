@@ -8,7 +8,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import pytest
 
 import sync
-from draw import EMAIL_HEADER, eligible_participants, ticket_value, tickets_for
+from draw import EMAIL_HEADERS, eligible_participants, ticket_value, tickets_for
+
+LEGACY_EMAIL_HEADER = EMAIL_HEADERS[1]
+OPTIONAL_EMAIL_HEADER = EMAIL_HEADERS[0]
 
 # Fixture values mirror the real sheet's headers and answer style.
 REAL_HUMAN_FACTORS = (
@@ -148,6 +151,8 @@ je ne regrette pas d'être allé voir
 
 ---
 *Identifiant : `{rex_id}`*
+
+{sync.LICENSE_LINE}
 """
         assert sync.render_markdown(entry) == expected
 
@@ -178,7 +183,8 @@ je ne regrette pas d'être allé voir
         entry = sync.parse_row(make_raw())
         rex_id = sync.compute_rex_id(entry.timestamp_raw)
         markdown = sync.render_markdown(entry)
-        assert markdown.endswith(f"*Identifiant : `{rex_id}`*\n")
+        assert f"*Identifiant : `{rex_id}`*\n" in markdown
+        assert markdown.endswith(sync.LICENSE_LINE + "\n")
         assert "Signaler" not in markdown
 
     def test_footer_with_report_form(self, monkeypatch):
@@ -307,10 +313,10 @@ class TestTickets:
 class TestEligibleParticipants:
     def rows(self):
         return [
-            {**make_raw(timestamp="01/06/2026 10:00:00"), EMAIL_HEADER: "alice@example.org"},
-            {**make_raw(timestamp="02/06/2026 10:00:00"), EMAIL_HEADER: "Alice@Example.org"},
-            {**make_raw(timestamp="03/06/2026 10:00:00"), EMAIL_HEADER: "bob@example.org"},
-            {**make_raw(timestamp="04/06/2026 10:00:00"), EMAIL_HEADER: ""},
+            {**make_raw(timestamp="01/06/2026 10:00:00"), LEGACY_EMAIL_HEADER: "alice@example.org"},
+            {**make_raw(timestamp="02/06/2026 10:00:00"), LEGACY_EMAIL_HEADER: "Alice@Example.org"},
+            {**make_raw(timestamp="03/06/2026 10:00:00"), LEGACY_EMAIL_HEADER: "bob@example.org"},
+            {**make_raw(timestamp="04/06/2026 10:00:00"), LEGACY_EMAIL_HEADER: ""},
         ]
 
     def test_grouping_is_email_case_insensitive(self):
@@ -336,3 +342,15 @@ class TestEligibleParticipants:
         participant = eligible_participants(self.rows(), set())["alice@example.org"]
         assert "alice" not in participant.email_hash
         assert len(participant.email_hash) == 8
+
+    def test_optional_email_column_takes_priority_over_legacy(self):
+        rows = [
+            {
+                **make_raw(timestamp="05/06/2026 10:00:00"),
+                OPTIONAL_EMAIL_HEADER: "carol@example.org",
+                LEGACY_EMAIL_HEADER: "stale@example.org",
+            },
+            {**make_raw(timestamp="06/06/2026 10:00:00"), OPTIONAL_EMAIL_HEADER: "dave@example.org"},
+        ]
+        participants = eligible_participants(rows, set())
+        assert set(participants) == {"carol@example.org", "dave@example.org"}

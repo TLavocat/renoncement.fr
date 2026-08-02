@@ -42,6 +42,12 @@ TIMESTAMP_FMT = "%d/%m/%Y %H:%M:%S"  # French sheet locale
 TZ = ZoneInfo("Europe/Paris")
 SUMMARY_TRIGGER_LEN = 100
 
+LICENSE_LINE = (
+    "*Récit publié sous licence "
+    "[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.fr), "
+    "attribution « un·e pilote, via renoncement.fr ».*"
+)
+
 # Logical name -> exact sheet header (= form question text). Renaming a form
 # question breaks this mapping; the sync then fails loudly listing both sides.
 # The email and photo columns are deliberately absent: never read, never output.
@@ -324,6 +330,7 @@ def render_markdown(entry: RexEntry) -> str:
         body += f"*Identifiant : `{rex_id}` — [Signaler ce REX]({report_url})*\n"
     else:
         body += f"*Identifiant : `{rex_id}`*\n"
+    body += "\n" + LICENSE_LINE + "\n"
 
     return front + body
 
