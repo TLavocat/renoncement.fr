@@ -48,11 +48,22 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin: 8px 0 4px;
+    margin: 12px 0 16px;
+}
+
+/* Keep the banner a mood-setter, not a wall, on small screens */
+@media (max-width: 600px) {
+    .home-banner {
+        max-height: 140px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
 }
 
 .cta-button {
     display: inline-block;
+    flex: 1 1 160px;
+    text-align: center;
     padding: 10px 22px;
     border-radius: 8px;
     font-weight: 600;
