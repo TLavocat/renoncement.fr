@@ -21,6 +21,7 @@ ShowRssButtonInSectionTermList = true
 hideFooter = false
 comments = true
 mainSections = ["rex"]
+images = ["/img/og.jpg"]
 
 [params.label]
 text = "Trophée du renoncement"
@@ -37,6 +38,17 @@ Ce site existe pour inverser ça. Partage ton récit de renoncement : le context
 
 Et chaque année, le **[Trophée du renoncement](/reglement/#3-tirage-au-sort)** : un tirage au sort parmi les récits publiés (ce n'est pas un concours, [c'est voulu](/faq/)) offre une journée de stage SIV. Une bonne décision au sol, récompensée par de la sécurité active en l'air.
 """
+
+# Decorative photo strips inserted after every 3rd entry in list pages.
+[[params.listStrips]]
+src = "/img/strip-falaise.jpg"
+alt = "Ailes de parapente en vol le long d'une falaise"
+[[params.listStrips]]
+src = "/img/strip-orage.jpg"
+alt = "Enclume de cumulonimbus à l'horizon derrière une crête de Chartreuse"
+[[params.listStrips]]
+src = "/img/strip-coucher.jpg"
+alt = "Coucher de soleil sur une mer de nuages en montagne"
 
 # giscus (comments). Leave repoID/categoryID empty until set up — the comments
 # partial renders nothing while repoID is empty. See SETUP.md, step G.

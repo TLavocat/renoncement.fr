@@ -30,4 +30,6 @@ Contact : <a17zf0fse@mozmail.com>, ou via le [dépôt GitHub du site](https://gi
 
 ## Propriété intellectuelle
 
+Les photographies du site sont de Thomas Lavocat, tous droits réservés.
+
 Le code source du site est publié sous licence GPL-3.0 sur [GitHub](https://github.com/TLavocat/renoncement.fr). Les récits restent la propriété de leurs auteurs ; ils sont mis à disposition du public sous licence [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.fr) (attribution « un·e pilote, via renoncement.fr ») et font l'objet d'une licence complémentaire au profit du site, dans les conditions décrites au [règlement](/reglement/).

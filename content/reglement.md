@@ -1,6 +1,10 @@
 ---
 title: "Règlement, confidentialité et modération"
 description: "Droit de publication, esprit de communauté, modération et tirage au sort."
+cover:
+  image: "/img/cover-reglement.jpg"
+  alt: "Une aile de parapente pliée dans l'herbe d'un décollage"
+  hidden: false
 ---
 
 ## 1. Droit de publication

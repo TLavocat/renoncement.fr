@@ -25,6 +25,24 @@
     color: var(--sky-deep);
 }
 
+/* Home banner (aerial view of the Saint-Hilaire south takeoff) */
+.home-banner {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+/* Decorative photo strips between list entries */
+.list-strip {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: var(--gap);
+    display: block;
+}
+
 /* Home call-to-action buttons */
 .cta-buttons {
     display: flex;
