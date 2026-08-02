@@ -22,17 +22,20 @@ hideFooter = false
 comments = true
 mainSections = ["rex"]
 
+[params.label]
+text = "Trophée du renoncement"
+
 [params.assets]
 favicon = "/favicon.svg"
 
 [params.homeInfoParams]
 Title = "Renoncer, c'est aussi piloter"
 Content = """
-Ce site rassemble les récits de pilotes de vol libre qui ont choisi, un jour, de **ne pas voler** — ou de poser plus tôt que prévu.
+Dans le vol libre, décider de ne pas voler est important, parfois vital. Ça fait partie de l'activité, mais ce n'est jamais récompensé.
 
-Chaque renoncement est une décision de pilotage à part entière. En partageant le contexte, les signaux faibles et le déclencheur de ta décision, tu aides tous les pilotes à mieux reconnaître ces situations.
+Ce site existe pour inverser ça. Partage ton récit de renoncement : le contexte, les signaux faibles, le déclencheur. Chaque récit, publié anonymement, aide tous les pilotes à reconnaître les pièges météo ou psychologiques, et dédramatise le fait de ne pas voler.
 
-Les récits sont publiés anonymement, et chaque publication participe au [tirage au sort annuel](/reglement/#3-tirage-au-sort) : une journée de stage SIV à gagner.
+Et chaque année, le **[Trophée du renoncement](/reglement/#3-tirage-au-sort)** : un tirage au sort parmi les récits publiés (ce n'est pas un concours, [c'est voulu](/faq/)) offre une journée de stage SIV. Une bonne décision au sol, récompensée par de la sécurité active en l'air.
 """
 
 # giscus (comments). Leave repoID/categoryID empty until set up — the comments
