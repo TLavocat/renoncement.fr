@@ -32,6 +32,10 @@ Le formulaire existe déjà. À vérifier :
    > détails dans le règlement : https://renoncement.fr/reglement/), et vous
    > confirmez qu'il s'agit de votre propre vécu.
    >
+   > Votre adresse e-mail (collectée via votre compte Google) sert uniquement
+   > au tirage au sort annuel et à la modération. Elle n'est jamais publiée,
+   > jamais transmise, et elle est purgée un mois après le tirage.
+   >
    > Ne citez personne de manière reconnaissable dans votre récit (ni nom,
    > ni surnom, ni détail qui identifie quelqu'un).
 2. **Collecte d'e-mail vérifiée** (anti-spam) : dans les paramètres du
