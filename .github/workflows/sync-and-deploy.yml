@@ -1,6 +1,7 @@
-# Single workflow on purpose: pushes made with GITHUB_TOKEN never trigger other
-# workflows, so a separate on:push deploy workflow would never fire after the
-# sync commit. Sync steps are skipped until the Google secrets exist (SETUP.md).
+# Stateless content pipeline: the Google Sheet is the source of truth. Every
+# run regenerates content/rex/ in the workspace, builds, and deploys — nothing
+# is ever committed back, so the workflow needs no write access to the repo
+# and branch protection needs no bypass. REX never enter git history.
 name: Sync and deploy
 
 on:
@@ -11,7 +12,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -50,55 +51,25 @@ jobs:
         if: env.GOOGLE_SHEET_ID != ''
         run: python scripts/sync.py
 
-      - name: Commit and push content changes
-        id: commit
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add content/rex
-          if git diff --staged --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            git commit -m "chore: sync REX from sheet"
-            git pull --rebase origin main
-            git push
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Keepalive against 60-day schedule auto-disable
-        if: github.event_name == 'schedule' && steps.commit.outputs.changed == 'false'
-        run: |
-          last=$(git log -1 --format=%ct)
-          if [ $(( $(date +%s) - last )) -gt $(( 45 * 24 * 3600 )) ]; then
-            git commit --allow-empty -m "chore: keepalive"
-            git push
-          fi
-
-      # Build and deploy — skipped on scheduled runs that changed nothing.
       - name: Setup Hugo
-        if: github.event_name != 'schedule' || steps.commit.outputs.changed == 'true'
         uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: "0.164.0"
           extended: true
 
       - name: Configure Pages
-        if: github.event_name != 'schedule' || steps.commit.outputs.changed == 'true'
         uses: actions/configure-pages@v6
         with:
           enablement: true
 
       - name: Build site
-        if: github.event_name != 'schedule' || steps.commit.outputs.changed == 'true'
         run: hugo --minify --gc
 
       - name: Upload Pages artifact
-        if: github.event_name != 'schedule' || steps.commit.outputs.changed == 'true'
         uses: actions/upload-pages-artifact@v5
         with:
           path: ./public
 
       - name: Deploy to GitHub Pages
         id: deploy
-        if: github.event_name != 'schedule' || steps.commit.outputs.changed == 'true'
         uses: actions/deploy-pages@v5

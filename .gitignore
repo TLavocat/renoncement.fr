@@ -16,3 +16,8 @@ credentials.json
 # Editors / OS
 .DS_Store
 *.swp
+
+# REX are generated at build time from the Google Sheet — never committed
+content/rex/*.md
+!content/rex/_index.md
+!content/rex/exemple.md

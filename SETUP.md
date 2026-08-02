@@ -181,3 +181,13 @@ n'est créé qu'au premier commentaire, c'est normal.
 
 (Le script peut aussi tourner en local avec les deux variables d'environnement
 exportées : `python scripts/draw.py --dry-run` — même sortie, même garantie.)
+
+## Note de maintenance : la règle des 60 jours
+
+Le contenu du site n'est jamais commité : la feuille Google est la source de
+vérité et chaque exécution horaire régénère tout. Contrepartie : si le dépôt
+ne reçoit aucun commit pendant 60 jours, GitHub prévient par e-mail puis met
+en pause les exécutions planifiées. Le site reste en ligne (dernière version
+publiée), seuls les nouveaux REX cessent d'apparaître. Pour reprendre : un
+clic sur « Enable » dans l'onglet Actions, ou n'importe quel commit — la
+première exécution rattrape tout, rien n'est perdu.
