@@ -16,6 +16,10 @@ Dire « ce renoncement vaut mieux que celui-là » serait une erreur : ça place
 
 D'où le tirage au sort : chaque récit compte, aucun ne vaut « plus » qu'un autre.
 
+## Pourquoi appeler ça un « Trophée » si le gagnant est tiré au sort ?
+
+Parce qu'ici, tous les renoncements se valent. Celui d'un débutant un jour de brise et celui d'un pilote confirmé un jour de front ont chacun coûté quelque chose à leur pilote : ils finissent donc tous premiers ex æquo. Et quand des concurrents sont ex æquo à la fin d'une compétition, il n'est pas rare qu'on les départage par tirage au sort. Le Trophée du renoncement, c'est exactement ça : une compétition où tout le monde finit premier, et où le tirage ne sert qu'à départager.
+
 ## Qu'est-ce qu'on perd, quand on décide de ne pas voler ?
 
 De l'ego, du temps, de l'argent, une RTT, un trajet, une négo avec ton/ta partenaire… On y laisse tous quelque chose.
