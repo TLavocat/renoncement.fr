@@ -1,6 +1,6 @@
 ---
 title: "Règlement, confidentialité et modération"
-description: "Droit de publication, esprit de cordée, modération et tirage au sort."
+description: "Droit de publication, esprit de communauté, modération et tirage au sort."
 ---
 
 ## 1. Droit de publication
@@ -20,7 +20,7 @@ Un récit peut être **retiré du site à tout moment** (voir §2). Le contenu d
 
 **Ne citez personne de manière reconnaissable** (nom, surnom, détail qui identifie quelqu'un). Toute personne qui se reconnaît dans un récit peut en demander la modification ou le retrait via le lien « Signaler ce REX », même si elle n'en est pas l'auteur.
 
-## 2. Esprit de cordée et Zéro Tolérance
+## 2. Esprit de communauté et Zéro Tolérance
 
 Ce site est modéré par la communauté :
 
