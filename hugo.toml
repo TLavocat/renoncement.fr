@@ -57,6 +57,10 @@ name = "Règlement"
 url = "/reglement/"
 weight = 30
 [[menus.main]]
+name = "FAQ"
+url = "/faq/"
+weight = 35
+[[menus.main]]
 name = "Mentions légales"
 url = "/mentions-legales/"
 weight = 40
