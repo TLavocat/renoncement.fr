@@ -30,3 +30,6 @@ Aucun regret. Une heure plus tard, le déco était intenable. Je retiens que qua
 * **Facteur le plus difficile à ignorer :** L'effet de groupe — voir les autres en l'air.
 * **Décision possible plus tôt ?** Oui, dès la lecture des prévisions du matin.
 * **Stress :** 3/5 | **Confiance renforcée :** 5/5
+
+---
+*Récit publié sous licence [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.fr), attribution « un·e pilote, via renoncement.fr ».*

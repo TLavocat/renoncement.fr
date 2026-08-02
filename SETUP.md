@@ -20,18 +20,36 @@ Résumé des étapes :
 
 ---
 
-## A. Formulaire REX (5 min)
+## A. Formulaire REX (10 min)
 
-Le formulaire existe déjà. Trois vérifications :
+Le formulaire existe déjà. À vérifier :
 
 1. **Consentement** : dans l'introduction du formulaire (le texte sous le
-   titre), la phrase suivante doit être visible :
-   > En soumettant ce formulaire, vous acceptez la publication anonyme de
-   > votre récit, et vous confirmez qu'il s'agit de votre propre vécu.
-2. **Supprimer la question photo/croquis** (« Souhaites-tu partager une photo… ») :
+   titre), les phrases suivantes doivent être visibles :
+   > En soumettant ce formulaire, vous acceptez que votre récit soit publié
+   > anonymement sous licence Creative Commons CC BY-NC 4.0 et réutilisé sous
+   > forme anonyme par renoncement.fr (analyses, synthèses, projets futurs —
+   > détails dans le règlement : https://renoncement.fr/reglement/), et vous
+   > confirmez qu'il s'agit de votre propre vécu.
+   >
+   > Ne citez personne de manière reconnaissable dans votre récit (ni nom,
+   > ni surnom, ni détail qui identifie quelqu'un).
+2. **Collecte d'e-mail vérifiée** (anti-spam) : dans les paramètres du
+   formulaire, garder « Collecter les adresses e-mail » en mode **Vérifiée** :
+   soumettre exige une connexion à un compte Google, ce qui est la principale
+   barrière anti-spam du site (le formulaire publie automatiquement — un champ
+   e-mail libre n'offrirait aucune protection). Conséquences à assumer et
+   affichées dans le règlement et les mentions légales : la soumission n'est
+   pas anonyme vis-à-vis du mainteneur et de Google (seule la **publication**
+   l'est), et l'adresse sert à deux choses — tirage au sort et modération.
+   Le script de publication ne lit jamais cette colonne.
+3. **Archiver le consentement** : après chaque modification du texte
+   d'introduction, imprimer le formulaire en PDF (Ctrl+P) et le ranger avec sa
+   date. C'est la preuve de ce à quoi les contributeurs ont consenti et quand.
+4. **Supprimer la question photo/croquis** (« Souhaites-tu partager une photo… ») :
    les fichiers envoyés portent le nom du répondant et présentent un risque de
    sécurité. La colonne restante dans la feuille est ignorée par le script.
-3. **Ne jamais renommer une question** après cette étape : les en-têtes de la
+5. **Ne jamais renommer une question** après cette étape : les en-têtes de la
    feuille sont le texte exact des questions, et le script s'appuie dessus
    (en cas de renommage, la synchro échoue en listant les en-têtes attendus
    vs réels — rien n'est publié de travers, mais elle reste rouge jusqu'à
@@ -153,8 +171,9 @@ n'est créé qu'au premier commentaire, c'est normal.
    d'un dépôt public sont lisibles par tous) : il donne un **numéro de ligne**
    de la feuille. Ouvrir la feuille de calcul à cette ligne (onglet des REX)
    pour lire l'adresse du gagnant.
-3. Vérifier l'activité de vol du gagnant (trace CFD) avant d'attribuer le lot
-   (une journée de stage SIV, 200 € max).
+3. Demander au gagnant sa licence FFVL de l'année en cours (ou licence
+   fédérale équivalente) avant d'attribuer le lot (une journée de stage SIV,
+   200 € max). La licence n'est pas conservée.
 4. **Un mois après le tirage** : vider la colonne `Adresse e-mail` de la
    feuille (Règlement §3). Modifier des cellules ne change jamais les
    identifiants des REX — sauf la colonne `Horodateur`, à ne **jamais** éditer
