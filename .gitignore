@@ -20,4 +20,3 @@ credentials.json
 # REX are generated at build time from the Google Sheet — never committed
 content/rex/*.md
 !content/rex/_index.md
-!content/rex/exemple.md
