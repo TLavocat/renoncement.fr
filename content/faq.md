@@ -1,6 +1,10 @@
 ---
 title: "Questions fréquentes"
 description: "Pourquoi ce site, pourquoi un tirage au sort, qui paie le lot."
+cover:
+  image: "/img/cover-faq.jpg"
+  alt: "Mer de nuages débordant sur un atterrissage de parapente"
+  hidden: false
 ---
 
 ## Pourquoi un tirage au sort et pas un concours ?

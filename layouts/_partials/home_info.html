@@ -3,6 +3,9 @@
        markdown content — goldmark unsafe=false strips HTML from user content. */ -}}
 {{- with site.Params.homeInfoParams }}
 <article class="first-entry home-info">
+    <img class="home-banner" src="/img/banner-home.jpg"
+         alt="Aile de parapente violette en vol devant la chaîne de Belledonne enneigée"
+         width="1800" height="600">
     <header class="entry-header">
         <h1>{{ .Title | markdownify }}</h1>
     </header>
