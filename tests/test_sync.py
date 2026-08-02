@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import pytest
 
 import sync
-from draw import ticket_value, tickets_for
+from draw import EMAIL_HEADER, eligible_participants, ticket_value, tickets_for
 
 # Fixture values mirror the real sheet's headers and answer style.
 REAL_HUMAN_FACTORS = (
@@ -302,3 +302,37 @@ class TestTickets:
     def test_asymptotic_cap_of_six(self):
         # The series converges to 6; float rounding may land exactly on it.
         assert 5.99 < tickets_for(300) <= 6
+
+
+class TestEligibleParticipants:
+    def rows(self):
+        return [
+            {**make_raw(timestamp="01/06/2026 10:00:00"), EMAIL_HEADER: "alice@example.org"},
+            {**make_raw(timestamp="02/06/2026 10:00:00"), EMAIL_HEADER: "Alice@Example.org"},
+            {**make_raw(timestamp="03/06/2026 10:00:00"), EMAIL_HEADER: "bob@example.org"},
+            {**make_raw(timestamp="04/06/2026 10:00:00"), EMAIL_HEADER: ""},
+        ]
+
+    def test_grouping_is_email_case_insensitive(self):
+        participants = eligible_participants(self.rows(), set())
+        assert participants["alice@example.org"].count == 2
+        assert participants["bob@example.org"].count == 1
+
+    def test_rows_without_email_are_skipped(self):
+        participants = eligible_participants(self.rows(), set())
+        assert len(participants) == 2
+
+    def test_first_row_is_sheet_row_number(self):
+        participants = eligible_participants(self.rows(), set())
+        assert participants["alice@example.org"].first_row == 2
+        assert participants["bob@example.org"].first_row == 4
+
+    def test_quarantined_rex_do_not_count(self):
+        quarantined = {sync.compute_rex_id("03/06/2026 10:00:00")}
+        participants = eligible_participants(self.rows(), quarantined)
+        assert "bob@example.org" not in participants
+
+    def test_printable_fields_never_contain_the_email(self):
+        participant = eligible_participants(self.rows(), set())["alice@example.org"]
+        assert "alice" not in participant.email_hash
+        assert len(participant.email_hash) == 8

@@ -21,7 +21,9 @@ Google Forms → private Google Sheet → GitHub Actions (scripts/sync.py)
   commit → build → deploy) because pushes made with `GITHUB_TOKEN` cannot
   trigger other workflows.
 - Comments are GitHub Discussions via giscus. No cookies, no tracking.
-- `scripts/draw.py` is the annual lottery draw — local-only, never in CI.
+- `scripts/draw.py` is the annual lottery draw, run via the manual "Lottery
+  draw" workflow. Log-safe by construction: it announces the winner as a sheet
+  row number + hash and never prints an email address.
 
 ## Development
 
