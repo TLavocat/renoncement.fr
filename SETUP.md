@@ -145,21 +145,20 @@ n'est créé qu'au premier commentaire, c'est normal.
 
 ## H. Tirage annuel (fin de saison)
 
-1. Sur l'ordinateur du mainteneur :
-
-   ```bash
-   export GOOGLE_SHEET_ID="…"                                # ID relevé en C7
-   export GOOGLE_SERVICE_ACCOUNT_JSON="$(cat service-account.json)"
-   pip install -r scripts/requirements.txt
-   python scripts/draw.py --dry-run   # table des tickets, sans tirage
-   python scripts/draw.py             # tirage réel
-   ```
-
-   Ce script ne doit **jamais** tourner dans GitHub Actions : il lit la colonne
-   e-mail, et les journaux d'Actions d'un dépôt public sont lisibles par tous.
-2. Vérifier l'activité de vol du gagnant (trace CFD) avant d'attribuer le lot
+1. Onglet **Actions → Lottery draw → Run workflow** :
+   - une première fois avec **Dry run** coché (par défaut) : affiche la table
+     des tickets (participants anonymisés par empreinte), sans tirer ;
+   - une seconde fois avec **Dry run** décoché : le tirage réel.
+2. Le résultat n'affiche **jamais d'adresse e-mail** (les journaux d'Actions
+   d'un dépôt public sont lisibles par tous) : il donne un **numéro de ligne**
+   de la feuille. Ouvrir la feuille de calcul à cette ligne (onglet des REX)
+   pour lire l'adresse du gagnant.
+3. Vérifier l'activité de vol du gagnant (trace CFD) avant d'attribuer le lot
    (une journée de stage SIV, 200 € max).
-3. **Un mois après le tirage** : vider la colonne `Adresse e-mail` de la
+4. **Un mois après le tirage** : vider la colonne `Adresse e-mail` de la
    feuille (Règlement §3). Modifier des cellules ne change jamais les
    identifiants des REX — sauf la colonne `Horodateur`, à ne **jamais** éditer
    pour une ligne déjà publiée.
+
+(Le script peut aussi tourner en local avec les deux variables d'environnement
+exportées : `python scripts/draw.py --dry-run` — même sortie, même garantie.)

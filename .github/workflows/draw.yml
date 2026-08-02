@@ -1,0 +1,36 @@
+# Manual lottery draw (Règlement §3). Log-safe: draw.py never prints email
+# addresses — the winner is announced as a sheet row number + hash only.
+name: Lottery draw
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (ticket table only, no draw)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  draw:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run the draw
+        env:
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          python scripts/draw.py ${{ inputs.dry_run && '--dry-run' || '' }} | tee -a "$GITHUB_STEP_SUMMARY"
