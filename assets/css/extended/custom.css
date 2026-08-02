@@ -34,6 +34,19 @@
     display: block;
 }
 
+/* Scroll hint under the home CTA */
+.scroll-hint {
+    display: block;
+    text-align: center;
+    margin: -4px 0 8px;
+    color: var(--secondary);
+    font-size: 14px;
+}
+
+.scroll-hint:hover {
+    color: var(--sky);
+}
+
 /* Decorative photo strips between list entries */
 .list-strip {
     width: 100%;
