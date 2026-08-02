@@ -13,13 +13,16 @@ Google Forms → private Google Sheet → GitHub Actions (scripts/sync.py)
             → Hugo (PaperMod) → GitHub Pages
 ```
 
-- `scripts/sync.py` runs hourly in CI: it reads the private response sheet via
-  a read-only service account and regenerates `content/rex/*.md` as a pure
-  desired state (a validated moderation report = the file is absent). It never
-  reads the email column and never prints row contents (public Actions logs).
-- `.github/workflows/sync-and-deploy.yml` is a single workflow (test → sync →
-  commit → build → deploy) because pushes made with `GITHUB_TOKEN` cannot
-  trigger other workflows.
+- **Stateless content**: the Google Sheet is the source of truth. Every hour,
+  `scripts/sync.py` reads it via a read-only service account and regenerates
+  `content/rex/*.md` in the CI workspace (a validated moderation report = the
+  file is absent); Hugo builds and deploys the result. Nothing is committed
+  back — REX never enter git history, and the workflow has zero write access
+  to the repo. The script never reads the email column and never prints row
+  contents (public Actions logs).
+- If the repo sees no commit for 60 days, GitHub emails a warning and pauses
+  the hourly schedule; the site keeps serving its last build, and one click
+  (or any commit) resumes syncing with no data lost.
 - Comments are GitHub Discussions via giscus. No cookies, no tracking.
 - `scripts/draw.py` is the annual lottery draw, run via the manual "Lottery
   draw" workflow. Log-safe by construction: it announces the winner as a sheet
