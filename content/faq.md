@@ -37,3 +37,16 @@ Moi, Thomas, à titre personnel.
 ## Pourquoi offrir une journée de stage SIV à de parfaits inconnus ?
 
 Parce que c'est ce qui rend cette expérience précieuse et réelle.
+
+## Comment ce site est-il financé ?
+
+Aujourd'hui : de ma poche, et c'est très bien comme ça. Pas de pub, pas de sponsor, pas de traceur.
+
+Si le site grandit, des partenaires pourraient un jour aider à financer de meilleurs lots, et les récits pourraient nourrir un livre ou des études sur la décision de renoncement. Rien de tout cela n'est prévu — mais je préfère l'écrire dès maintenant plutôt que de vous le laisser découvrir plus tard. Et quoi qu'il arrive :
+
+* vos identités et adresses e-mail ne sont pas à vendre — jamais ;
+* les récits ne sont utilisés que sous forme anonyme ;
+* les analyses sont restituées gratuitement à la communauté ;
+* tout changement sera annoncé ici, avant.
+
+Ce qui a de la valeur ici, c'est ce qu'on apprend ensemble — et ça, ça restera gratuit. Les récits sont d'ailleurs publiés sous licence [Creative Commons CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.fr) : clubs, moniteurs, chercheurs, vous pouvez librement les partager et les réutiliser à des fins non commerciales. Les détails juridiques sont dans le [règlement](/reglement/).
