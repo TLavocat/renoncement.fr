@@ -113,11 +113,8 @@ class TestDates:
 
 
 class TestRenderMarkdown:
-    def test_byte_exact_output(self, monkeypatch):
-        monkeypatch.setattr(sync, "REPORT_FORM_URL", "")
-        monkeypatch.setattr(sync, "REPORT_ENTRY_ID", "")
+    def test_byte_exact_output(self):
         entry = sync.parse_row(make_raw())
-        rex_id = sync.compute_rex_id(entry.timestamp_raw)
         expected = f"""---
 title: "Renoncement du 30/07/2026"
 date: 2026-07-31T13:29:39+02:00
@@ -148,11 +145,6 @@ je ne regrette pas d'être allé voir
 * **Facteur le plus difficile à ignorer :** L'investissement logistique et temps déjà consenti
 * **Décision possible plus tôt ?** Non, la décision devait se prendre au déco.
 * **Stress :** 1/5 | **Confiance renforcée :** 4/5
-
----
-*Identifiant : `{rex_id}`*
-
-{sync.LICENSE_LINE}
 """
         assert sync.render_markdown(entry) == expected
 
@@ -177,26 +169,13 @@ je ne regrette pas d'être allé voir
         markdown = sync.render_markdown(sync.parse_row(raw))
         assert "…" in markdown.split("summary:")[1].split("\n")[0]
 
-    def test_footer_without_report_form(self, monkeypatch):
-        monkeypatch.setattr(sync, "REPORT_FORM_URL", "")
-        monkeypatch.setattr(sync, "REPORT_ENTRY_ID", "")
-        entry = sync.parse_row(make_raw())
-        rex_id = sync.compute_rex_id(entry.timestamp_raw)
-        markdown = sync.render_markdown(entry)
-        assert f"*Identifiant : `{rex_id}`*\n" in markdown
-        assert markdown.endswith(sync.LICENSE_LINE + "\n")
+    def test_no_footer_in_markdown(self):
+        # The identifiant / report / license block is templated in
+        # layouts/single.html, never baked into the generated content.
+        markdown = sync.render_markdown(sync.parse_row(make_raw()))
+        assert "Identifiant" not in markdown
         assert "Signaler" not in markdown
-
-    def test_footer_with_report_form(self, monkeypatch):
-        monkeypatch.setattr(sync, "REPORT_FORM_URL", "https://forms.example/viewform")
-        monkeypatch.setattr(sync, "REPORT_ENTRY_ID", "entry.123")
-        entry = sync.parse_row(make_raw())
-        rex_id = sync.compute_rex_id(entry.timestamp_raw)
-        markdown = sync.render_markdown(entry)
-        assert (
-            f"[Signaler ce REX](https://forms.example/viewform?usp=pp_url&entry.123={rex_id})"
-            in markdown
-        )
+        assert "licence" not in markdown
 
     def test_empty_optional_fields_omit_bullets(self):
         raw = make_raw(envie="", factors_social="", stress="")

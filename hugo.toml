@@ -39,6 +39,12 @@ Ce site existe pour inverser ça. Partage ton récit de renoncement : le context
 Et chaque année, le **[Trophée du renoncement](/reglement/#3-tirage-au-sort)** : un tirage au sort parmi les récits publiés (ce n'est pas un concours, [c'est voulu](/faq/)) offre une journée de stage SIV. Une bonne décision au sol, récompensée par de la sécurité active en l'air.
 """
 
+# Moderation report link, rendered in each REX page's meta block
+# (layouts/single.html). Empty entryId = identifiant shown without a link.
+[params.rexReport]
+formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSet36j_pft9KbgyV9Jikts3eZeAvBRLKenrGkeaBK1XU0Vk0Q/viewform"
+entryId = "entry.1217368245"
+
 # Decorative photo strips inserted after every 3rd entry in list pages.
 [[params.listStrips]]
 src = "/img/strip-falaise.jpg"

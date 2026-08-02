@@ -79,9 +79,9 @@ Le formulaire existe déjà. À vérifier :
 5. Récupérer l'identifiant de pré-remplissage : dans l'éditeur du formulaire,
    **⋮ → Obtenir le lien pré-rempli** → taper `test` dans le champ →
    **Obtenir le lien** → copier. L'URL contient `entry.NNNNNNNNN=test`.
-6. Dans `scripts/sync.py`, renseigner :
-   - `REPORT_FORM_URL` = l'URL `…/viewform` du formulaire de modération ;
-   - `REPORT_ENTRY_ID` = `entry.NNNNNNNNN` (le numéro relevé au point 5).
+6. Dans `hugo.toml`, section `[params.rexReport]`, renseigner :
+   - `formUrl` = l'URL `…/viewform` du formulaire de modération ;
+   - `entryId` = `entry.NNNNNNNNN` (le numéro relevé au point 5).
 
    Commiter. Chaque REX affichera alors un lien « Signaler ce REX » pré-rempli.
 
