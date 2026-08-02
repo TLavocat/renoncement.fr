@@ -29,24 +29,13 @@ MOD_WORKSHEET = "Réponses au formulaire 2"
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "content" / "rex"
 PROTECTED = {"_index.md"}
 
-# Moderation form report link, shown in each REX footer. Empty until the
-# moderation form exists (SETUP.md step B): the footer then shows the rex_id
-# without a link.
-REPORT_FORM_URL = (
-    "https://docs.google.com/forms/d/e/"
-    "1FAIpQLSet36j_pft9KbgyV9Jikts3eZeAvBRLKenrGkeaBK1XU0Vk0Q/viewform"
-)
-REPORT_ENTRY_ID = "entry.1217368245"
+# The identifiant / report link / license footer is NOT rendered here: it is
+# a presentation concern, templated in layouts/single.html from
+# site.Params.rexReport (hugo.toml) and the page's file name (= rex_id).
 
 TIMESTAMP_FMT = "%d/%m/%Y %H:%M:%S"  # French sheet locale
 TZ = ZoneInfo("Europe/Paris")
 SUMMARY_TRIGGER_LEN = 100
-
-LICENSE_LINE = (
-    "*Récit publié sous licence "
-    "[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.fr), "
-    "attribution « un·e pilote, via renoncement.fr ».*"
-)
 
 # Logical name -> exact sheet header (= form question text). Renaming a form
 # question breaks this mapping; the sync then fails loudly listing both sides.
@@ -271,7 +260,6 @@ def _bullet(label: str, value: str) -> str:
 
 
 def render_markdown(entry: RexEntry) -> str:
-    rex_id = compute_rex_id(entry.timestamp_raw)
     date = parse_timestamp(entry.timestamp_raw)
     title_date = entry.flight_date or date.strftime("%d/%m/%Y")
 
@@ -323,14 +311,6 @@ def render_markdown(entry: RexEntry) -> str:
         analysis += "* " + " | ".join(scores) + "\n"
     if analysis:
         body += "\n### Analyse\n" + analysis
-
-    body += "\n---\n"
-    if REPORT_FORM_URL and REPORT_ENTRY_ID:
-        report_url = f"{REPORT_FORM_URL}?usp=pp_url&{REPORT_ENTRY_ID}={rex_id}"
-        body += f"*Identifiant : `{rex_id}` — [Signaler ce REX]({report_url})*\n"
-    else:
-        body += f"*Identifiant : `{rex_id}`*\n"
-    body += "\n" + LICENSE_LINE + "\n"
 
     return front + body
 

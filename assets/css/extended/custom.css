@@ -74,6 +74,27 @@
     color: var(--sky-deep);
 }
 
+/* REX page: comments, then meta block, then navigation — with breathing room */
+.giscus-comments {
+    margin-top: 8px;
+}
+
+.rex-meta {
+    margin-top: 36px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    color: var(--secondary);
+    font-size: 14px;
+}
+
+.rex-meta p {
+    margin: 4px 0;
+}
+
+.post-single .paginav {
+    margin-top: 44px;
+}
+
 /* Subtle lift on list cards */
 .post-entry {
     transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
