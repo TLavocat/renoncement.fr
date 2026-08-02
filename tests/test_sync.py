@@ -214,7 +214,6 @@ je ne regrette pas d'être allé voir
 class TestSyncContentDir:
     def test_desired_state(self, tmp_path):
         (tmp_path / "_index.md").write_text("index", encoding="utf-8")
-        (tmp_path / "exemple.md").write_text("exemple", encoding="utf-8")
         (tmp_path / "stale00001.md").write_text("old", encoding="utf-8")
         desired = {"aaaaaaaaaa": "content a", "bbbbbbbbbb": "content b"}
 
@@ -222,7 +221,7 @@ class TestSyncContentDir:
 
         assert (written, removed) == (2, 1)
         names = {path.name for path in tmp_path.glob("*.md")}
-        assert names == {"_index.md", "exemple.md", "aaaaaaaaaa.md", "bbbbbbbbbb.md"}
+        assert names == {"_index.md", "aaaaaaaaaa.md", "bbbbbbbbbb.md"}
         assert (tmp_path / "_index.md").read_text(encoding="utf-8") == "index"
 
     def test_quarantined_id_removed(self, tmp_path):

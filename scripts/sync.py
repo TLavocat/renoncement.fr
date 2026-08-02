@@ -27,7 +27,7 @@ from zoneinfo import ZoneInfo
 REX_WORKSHEET = "Réponses au formulaire 1"
 MOD_WORKSHEET = "Réponses au formulaire 2"
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "content" / "rex"
-PROTECTED = {"_index.md", "exemple.md"}
+PROTECTED = {"_index.md"}
 
 # Moderation form report link, shown in each REX footer. Empty until the
 # moderation form exists (SETUP.md step B): the footer then shows the rex_id
