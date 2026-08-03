@@ -1,0 +1,26 @@
+# Dependabot opens PRs when pinned dependencies have updates.
+# It understands hash-pinned pip requirements (requirements.in +
+# requirements.txt) and SHA-pinned actions (updates hash + version comment).
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/scripts"
+    schedule:
+      interval: "monthly"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 5
+
+  # PaperMod theme (git submodule)
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 2
