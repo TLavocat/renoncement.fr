@@ -38,8 +38,10 @@ Ce site est modéré par la communauté :
 
 ## 3. Tirage au sort
 
-Un **tirage au sort annuel**, en fin de saison, récompense la participation :
+Un **tirage au sort annuel** récompense la participation :
 
+* **Gratuité** : la participation est gratuite et sans obligation d'achat.
+* **Période** : le tirage a lieu chaque année **début décembre** ; participent les récits publiés au cours des douze mois précédents.
 * **Lot** : une journée de stage SIV, d'une valeur maximale de **200 €**.
 * **Tickets dégressifs** : chaque récit publié rapporte des tickets, avec un rendement décroissant pour garder le tirage équitable :
 
@@ -56,7 +58,9 @@ Un **tirage au sort annuel**, en fin de saison, récompense la participation :
 * **Financement** : le lot est payé personnellement par l'éditeur du site, à titre individuel, sans sponsor ni contrepartie.
 * **Participation** : chaque récit soumis participe automatiquement. Le formulaire exige une connexion à un compte Google (c'est la barrière anti-spam du site) et collecte l'adresse e-mail associée — la **publication** de votre récit reste anonyme, mais la soumission ne l'est pas vis-à-vis du mainteneur.
 * **Vérification** : faite a posteriori et concernant toujours le gagnant. Si vous gagnez, il vous sera simplement demandé une preuve que vous êtes pilote : votre **licence FFVL de l'année en cours** (ou licence fédérale équivalente pour les pilotes non licenciés en France) — même si le stage est ensuite suivi par une autre personne (voir « Cessible »).
-* **Remise du lot** : le gagnant est contacté par e-mail. Le lot est un **remboursement par virement bancaire** d'une journée de stage SIV (200 € max), **effectuée après le tirage**, sur présentation d'un justificatif (facture ou reçu du stage) envoyé **depuis l'adresse e-mail contactée** pour l'annonce du gain.
+* **Remise du lot** : le gagnant est contacté par e-mail. Sans réponse sous **30 jours**, un nouveau tirage est effectué. Le lot est un **remboursement par virement bancaire** d'une journée de stage SIV (200 € max), **effectuée après le tirage**, sur présentation d'un justificatif (facture ou reçu du stage) envoyé **depuis l'adresse e-mail contactée** pour l'annonce du gain. Le stage doit être effectué et le justificatif transmis dans les **douze mois** suivant le tirage ; passé ce délai, le lot est perdu.
+* **Mineurs** : les pilotes mineurs peuvent participer ; la remise du lot est alors conditionnée à l'accord d'un représentant légal.
+* **Responsabilité** : le stage est choisi et effectué sous la seule responsabilité du gagnant (ou de la personne à qui il cède son gain) et de l'école ; renoncement.fr n'intervient que comme financeur.
 * **Cessible** : l'objectif est que quelqu'un vole plus en sécurité. Si vous n'avez pas besoin d'un SIV, vous pouvez offrir votre gain à un·e ami·e : c'est alors son stage qui est remboursé, une fois effectué, via le même justificatif transmis par vous.
 * **Données** : aucun numéro de licence n'est collecté à la soumission — seul le gagnant présente sa licence, par e-mail, au moment de la remise du lot, et elle n'est pas conservée. L'adresse e-mail sert au tirage et à la modération (bannissement en cas d'abus, §2), et est **purgée un mois après** le tirage — à l'exception des adresses liées à un abus avéré, conservées le temps de sa gestion.
 * **Vie privée** : le site ne dépose aucun cookie et n'embarque aucun traceur. Les commentaires passent par GitHub (module giscus) et relèvent des conditions de GitHub. Détails dans les [mentions légales](/mentions-legales/).

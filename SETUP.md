@@ -16,7 +16,7 @@ Résumé des étapes :
 | E. GitHub Pages + domaine | Le site est en ligne sur renoncement.fr |
 | F. DNS | Le domaine pointe vers GitHub |
 | G. Discussions + giscus | Les commentaires apparaissent sous les REX |
-| H. Tirage annuel | Rituel de fin de saison |
+| H. Tirage annuel | Rituel de début décembre |
 
 ---
 
@@ -177,7 +177,7 @@ Vérifier : `dig renoncement.fr +short` doit lister les quatre adresses.
 Note : un REX sans commentaire affiche une zone vide — le fil de discussion
 n'est créé qu'au premier commentaire, c'est normal.
 
-## H. Tirage annuel (fin de saison)
+## H. Tirage annuel (début décembre)
 
 1. Onglet **Actions → Lottery draw → Run workflow** :
    - une première fois avec **Dry run** coché (par défaut) : affiche la table
