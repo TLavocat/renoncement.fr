@@ -6,10 +6,13 @@ name: Sync and deploy
 
 on:
   schedule:
-    # Two slots per hour: GitHub's scheduler is best-effort and sheds cron
-    # slots under load (observed >50% drop rate) — doubling the attempts
-    # halves the average publication delay when slots are skipped.
-    - cron: "17,47 * * * *"
+    # Backstop only: the real trigger is event-driven — a Google Apps Script
+    # bound to the sheet fires workflow_dispatch the moment a REX arrives or
+    # moderation changes (scripts/apps-script-trigger.gs, SETUP.md step I).
+    # GitHub's cron scheduler sheds slots aggressively (observed 50-85% drop
+    # rates at hourly and half-hourly cadence), so it only guards against a
+    # dead Apps Script now: twice a day, off-peak minutes.
+    - cron: "17 5,17 * * *"
   workflow_dispatch:
   push:
     branches: [main]

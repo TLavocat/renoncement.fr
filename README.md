@@ -13,16 +13,21 @@ Google Forms → private Google Sheet → GitHub Actions (scripts/sync.py)
             → Hugo (PaperMod) → GitHub Pages
 ```
 
-- **Stateless content**: the Google Sheet is the source of truth. Every hour,
+- **Stateless content**: the Google Sheet is the source of truth.
   `scripts/sync.py` reads it via a read-only service account and regenerates
   `content/rex/*.md` in the CI workspace (a validated moderation report = the
   file is absent); Hugo builds and deploys the result. Nothing is committed
   back — REX never enter git history, and the workflow has zero write access
   to the repo. The script never reads the email column and never prints row
   contents (public Actions logs).
+- **Event-driven**: a Google Apps Script bound to the sheet
+  (`scripts/apps-script-trigger.gs`) fires `workflow_dispatch` the moment a
+  récit is submitted or moderation changes, so publication takes minutes. A
+  twice-daily cron is only a backstop — GitHub's scheduler sheds most slots
+  at higher frequencies.
 - If the repo sees no commit for 60 days, GitHub emails a warning and pauses
-  the hourly schedule; the site keeps serving its last build, and one click
-  (or any commit) resumes syncing with no data lost.
+  the backstop schedule; the site keeps serving its last build, and one click
+  (or any commit) resumes it with no data lost.
 - Comments are GitHub Discussions via giscus. No cookies, no tracking.
 - `scripts/draw.py` is the annual lottery draw, run via the manual "Lottery
   draw" workflow. Log-safe by construction: it announces the winner as a sheet
