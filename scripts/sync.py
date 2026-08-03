@@ -278,6 +278,20 @@ def build_summary(entry: RexEntry) -> str:
     return meta
 
 
+# Markdown-active ASCII punctuation. A backslash before any ASCII punctuation
+# is a CommonMark escape rendering the literal character, so escaping this set
+# makes user text inert: no emphasis, no headings, no links, no images, and no
+# raw-HTML angle brackets (double protection on top of goldmark unsafe=false).
+_MD_ACTIVE = set(r"\`*_{}[]()#+-.!|>~<&\"'=:")
+
+
+def escape_markdown(text: str) -> str:
+    """Neutralize markdown in user text: every active character is escaped,
+    so the page shows exactly what the pilot typed. Applied to v2 fields only
+    (the v1 corpus is closed, human-verified, and byte-frozen)."""
+    return "".join(f"\\{c}" if c in _MD_ACTIVE else c for c in text)
+
+
 def _bullet(label: str, value: str) -> str:
     return f"* {label} {value}\n" if value else ""
 
@@ -332,23 +346,29 @@ def _render_v1_body(entry: RexEntry) -> str:
 
 
 def _checked_factors(cell: str) -> str:
-    """Checkbox items joined for display, minus the 'Non applicable' filler."""
-    return ", ".join(item for item in split_checkboxes(cell) if item != "Non applicable")
+    """Checkbox items joined for display, minus the 'Non applicable' filler.
+    Escaped: the 'Autre :' checkbox answers are free text too."""
+    return ", ".join(
+        escape_markdown(item) for item in split_checkboxes(cell) if item != "Non applicable"
+    )
 
 
 def _render_v2_body(entry: RexEntry) -> str:
-    body = f"**Expérience :** {entry.experience or '—'} | **Décision :** {entry.decision or '—'}\n"
+    body = (
+        f"**Expérience :** {escape_markdown(entry.experience) or '—'} | "
+        f"**Décision :** {escape_markdown(entry.decision) or '—'}\n"
+    )
 
     if entry.envie:
-        body += "\n### Pourquoi voler ?\n" + entry.envie + "\n"
+        body += "\n### Pourquoi voler ?\n" + escape_markdown(entry.envie) + "\n"
 
-    body += "\n### Le récit\n" + entry.narrative + "\n"
+    body += "\n### Le récit\n" + escape_markdown(entry.narrative) + "\n"
 
     if entry.trigger_short:
-        body += "\n### Le déclencheur\n" + entry.trigger_short + "\n"
+        body += "\n### Le déclencheur\n" + escape_markdown(entry.trigger_short) + "\n"
 
     if entry.lesson:
-        body += "\n### Qu'en retires-tu ?\n" + entry.lesson + "\n"
+        body += "\n### Qu'en retires-tu ?\n" + escape_markdown(entry.lesson) + "\n"
 
     signals = ""
     signals += _bullet("**Facteurs humains :**", _checked_factors(entry.factors_human))
@@ -360,11 +380,26 @@ def _render_v2_body(entry: RexEntry) -> str:
     if signals:
         body += "\n### Signaux Faibles\n" + signals
 
-    analysis = _render_analysis(entry)
+    analysis = _render_analysis_v2(entry)
     if analysis:
         body += "\n### Analyse\n" + analysis
 
     return body
+
+
+def _render_analysis_v2(entry: RexEntry) -> str:
+    analysis = ""
+    analysis += _bullet("**Sentiment :**", escape_markdown(entry.sentiment))
+    analysis += _bullet("**Facteur le plus difficile à ignorer :**", escape_markdown(entry.hardest_factor))
+    analysis += _bullet("**Décision possible plus tôt ?**", escape_markdown(entry.earlier_decision))
+    scores = []
+    if entry.stress:
+        scores.append(f"**Stress :** {escape_markdown(entry.stress)}/5")
+    if entry.confidence:
+        scores.append(f"**Confiance renforcée :** {escape_markdown(entry.confidence)}/5")
+    if scores:
+        analysis += "* " + " | ".join(scores) + "\n"
+    return analysis
 
 
 def render_markdown(entry: RexEntry) -> str:

@@ -97,3 +97,8 @@ weight = 50
 # Raw HTML in markdown is stripped. REX pages are generated from public form
 # submissions — flipping this to true would allow HTML/JS injection on the site.
 unsafe = false
+
+[markup.goldmark.extensions]
+# No auto-linking of bare URLs: user text is markdown-escaped by sync.py, and
+# linkify would still turn pasted URLs into live links behind its back.
+linkify = false
