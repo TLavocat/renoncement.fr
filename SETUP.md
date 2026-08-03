@@ -30,7 +30,8 @@ Le formulaire existe déjà. À vérifier :
    > anonymement sous licence Creative Commons CC BY-NC 4.0 et réutilisé sous
    > forme anonyme par renoncement.fr (analyses, synthèses, projets futurs —
    > détails dans le règlement : https://renoncement.fr/reglement/), et vous
-   > confirmez qu'il s'agit de votre propre vécu.
+   > confirmez qu'il s'agit de votre propre vécu et que vous êtes
+   > l'auteur·e du texte.
    >
    > Votre adresse e-mail (collectée via votre compte Google) sert uniquement
    > au tirage au sort annuel et à la modération. Elle n'est jamais publiée,

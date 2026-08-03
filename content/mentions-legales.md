@@ -32,4 +32,6 @@ Contact : <a17zf0fse@mozmail.com>, ou via le [dépôt GitHub du site](https://gi
 
 Les photographies du site sont de Thomas Lavocat, tous droits réservés.
 
-Le code source du site est publié sous licence GPL-3.0 sur [GitHub](https://github.com/TLavocat/renoncement.fr). Les récits restent la propriété de leurs auteurs ; ils sont mis à disposition du public sous licence [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.fr) (attribution « un·e pilote, via renoncement.fr ») et font l'objet d'une licence complémentaire au profit du site, dans les conditions décrites au [règlement](/reglement/).
+Le code source du site est publié sous licence GPL-3.0 sur [GitHub](https://github.com/TLavocat/renoncement.fr). Les récits restent la propriété de leurs auteurs, qui certifient en être les auteurs à la soumission ; ils sont mis à disposition du public sous licence [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.fr) (attribution « un·e pilote, via renoncement.fr ») et font l'objet d'une licence complémentaire au profit du site, dans les conditions décrites au [règlement](/reglement/). Cette licence engage directement les réutilisateurs envers les auteurs : le site n'est pas garant de son respect par des tiers.
+
+**Retrait sur notification** : si vous estimez qu'un contenu publié porte atteinte à vos droits (droit d'auteur notamment), signalez-le au contact ci-dessus ou via le lien « Signaler ce REX » : il sera retiré sur notification.
