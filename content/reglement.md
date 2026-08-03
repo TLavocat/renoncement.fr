@@ -9,7 +9,7 @@ cover:
 
 ## 1. Droit de publication
 
-En soumettant le formulaire de partage, vous acceptez la **publication anonyme** de votre récit. Vous partagez votre propre vécu, avec vos propres mots.
+En soumettant le formulaire de partage, vous acceptez la **publication anonyme** de votre récit, et vous certifiez **en être l'auteur·e** : votre propre vécu, avec vos propres mots. Ne soumettez jamais un texte écrit par quelqu'un d'autre.
 
 Votre récit est publié sous une double licence :
 
@@ -18,11 +18,15 @@ Votre récit est publié sous une double licence :
 
 Ces licences sont non exclusives : votre récit reste le vôtre, vous pouvez le raconter où vous voulez. L'objectif premier reste inchangé : **restituer gratuitement à la communauté** une meilleure connaissance de la psychologie du pilote au moment de décider de ne pas voler.
 
+La licence CC BY-NC engage directement celles et ceux qui réutilisent les récits envers leurs auteurs ; le site n'est **pas garant** du respect de ces conditions par des tiers et n'exerce aucun contrôle sur les reproductions faites hors du site.
+
 **Ce qui n'est jamais concédé : votre identité.** Les récits ne sont exploités que sous forme anonyme. Les adresses e-mail ne servent qu'au tirage au sort, ne sont **jamais vendues ni transmises à quiconque**, et sont purgées un mois après le tirage.
 
 Un récit peut être **retiré du site à tout moment** (voir §2) : le retrait est effectif en une heure au plus, et le site ne conserve pas d'archive des récits retirés. Relisez-vous néanmoins avant d'envoyer : Internet a de la mémoire (caches des moteurs de recherche, archives externes) et ce qui a été lu ne peut pas être « dé-lu ».
 
 **Ne citez personne de manière reconnaissable** (nom, surnom, détail qui identifie quelqu'un). Toute personne qui se reconnaît dans un récit peut en demander la modification ou le retrait via le lien « Signaler ce REX », même si elle n'en est pas l'auteur.
+
+**Retrait sur notification** : tout contenu portant atteinte aux droits d'un tiers (droit d'auteur, vie privée, diffamation) est retiré sur notification adressée au contact des [mentions légales](/mentions-legales/) ou via « Signaler ce REX ».
 
 ## 2. Esprit de communauté et Zéro Tolérance
 
