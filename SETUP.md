@@ -207,3 +207,45 @@ en pause les exécutions planifiées. Le site reste en ligne (dernière version
 publiée), seuls les nouveaux REX cessent d'apparaître. Pour reprendre : un
 clic sur « Enable » dans l'onglet Actions, ou n'importe quel commit — la
 première exécution rattrape tout, rien n'est perdu.
+
+## I. Publication instantanée (Apps Script → GitHub)
+
+Le planificateur de GitHub saute la majorité des créneaux cron : sans cette
+étape, un récit peut attendre des heures. Avec elle, le site se reconstruit
+dans les minutes qui suivent chaque soumission ou modération — le cron
+(2 fois par jour) ne sert plus que de filet de secours.
+
+1. **Créer le jeton GitHub** : Settings (avatar) → **Developer settings →
+   Personal access tokens → Fine-grained tokens → Generate new token**.
+   - Token name : `renoncement-dispatch` ; Expiration : 1 an (noter la date
+     de renouvellement dans un agenda).
+   - Repository access : **Only select repositories** → `renoncement.fr`.
+   - Permissions → Repository permissions → **Actions : Read and write**.
+     Rien d'autre. Générer, copier le jeton (affiché une seule fois).
+2. **Installer le script** : ouvrir la feuille de calcul des réponses →
+   **Extensions → Apps Script** → coller le contenu de
+   `scripts/apps-script-trigger.gs` → enregistrer.
+3. **Renseigner le jeton** : dans l'éditeur Apps Script, ⚙️ **Paramètres du
+   projet → Propriétés du script → Ajouter** : propriété `GITHUB_PAT`,
+   valeur = le jeton copié en 1.
+4. **Créer les deux déclencheurs** : ⏰ **Déclencheurs → Ajouter un
+   déclencheur** :
+   - fonction `onFormSubmitTrigger` · source **Depuis la feuille de calcul**
+     · type **Lors de l'envoi du formulaire** ;
+   - fonction `onEditTrigger` · source **Depuis la feuille de calcul**
+     · type **Lors de la modification**.
+   Google demandera d'autoriser le script (accès feuille + service externe).
+5. **Tester** : soumettre un REX de test → l'onglet Actions du dépôt doit
+   montrer une exécution `workflow_dispatch` dans la minute.
+6. **Message de confirmation du formulaire** (communication) : éditeur du
+   formulaire REX → ⚙️ Paramètres → **Présentation → Message de
+   confirmation** :
+   > Merci ! Ton récit sera publié anonymement sur renoncement.fr d'ici
+   > quelques minutes (parfois quelques heures). Il participe au Trophée du
+   > renoncement — tirage début décembre.
+
+Sécurité : le jeton ne permet que de déclencher/relancer des workflows de ce
+dépôt (aucun accès au code ni aux secrets) ; il vit dans les propriétés du
+script, lisibles uniquement par le compte Google propriétaire de la feuille.
+Le script n'envoie jamais rien du contenu de la feuille — son seul message à
+GitHub est « lance le workflow ».
