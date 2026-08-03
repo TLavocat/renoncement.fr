@@ -78,6 +78,17 @@ REX_COLUMNS = {
     ),
 }
 
+# Form v2 (2026-08-03): one free narrative replaces the v1 prose questions
+# (plan, signals_detail, trigger, bilan — their columns stay in the sheet for
+# old rows). A row with a non-empty narrative renders with the v2 template;
+# otherwise the v1 template. These headers are tolerated as absent so the
+# code can deploy before/after the form change in any order.
+V2_COLUMNS = {
+    "narrative": "Raconte ton renoncement",
+    "trigger_short": "Le déclencheur final, en une phrase",
+    "lesson": "Qu'en retires-tu pour tes prochains vols ?",
+}
+
 MOD_COLUMNS = {
     "rex_id": "rex_id",
     "validated": "Validé",
@@ -105,6 +116,14 @@ class RexEntry:
     stress: str
     experience: str
     confidence: str
+    # Form v2 fields; all empty on v1 rows.
+    narrative: str = ""
+    trigger_short: str = ""
+    lesson: str = ""
+
+    @property
+    def is_v2(self) -> bool:
+        return bool(self.narrative)
 
 
 def get_spreadsheet():
@@ -214,6 +233,7 @@ def _block(text: str) -> str:
 
 def parse_row(raw: dict) -> RexEntry | None:
     values = {logical: raw.get(header, "") for logical, header in REX_COLUMNS.items()}
+    values.update({logical: raw.get(header, "") for logical, header in V2_COLUMNS.items()})
     if not values["timestamp"].strip():
         return None
     if not any(str(value).strip() for logical, value in values.items() if logical != "timestamp"):
@@ -236,6 +256,9 @@ def parse_row(raw: dict) -> RexEntry | None:
         stress=_single_line(values["stress"]),
         experience=_single_line(values["experience"]),
         confidence=_single_line(values["confidence"]),
+        narrative=_block(values["narrative"]),
+        trigger_short=_single_line(values["trigger_short"]),
+        lesson=_block(values["lesson"]),
     )
 
 
@@ -245,7 +268,7 @@ def parse_timestamp(timestamp_raw: str) -> datetime:
 
 def build_summary(entry: RexEntry) -> str:
     meta = " · ".join(part for part in (entry.experience, entry.decision) if part)
-    trigger = _single_line(entry.trigger)
+    trigger = _single_line(entry.trigger_short or entry.narrative) if entry.is_v2 else _single_line(entry.trigger)
     if len(trigger) > SUMMARY_TRIGGER_LEN:
         trigger = trigger[:SUMMARY_TRIGGER_LEN].rstrip() + "…"
     if meta and trigger:
@@ -259,19 +282,22 @@ def _bullet(label: str, value: str) -> str:
     return f"* {label} {value}\n" if value else ""
 
 
-def render_markdown(entry: RexEntry) -> str:
-    date = parse_timestamp(entry.timestamp_raw)
-    title_date = entry.flight_date or date.strftime("%d/%m/%Y")
+def _render_analysis(entry: RexEntry) -> str:
+    analysis = ""
+    analysis += _bullet("**Sentiment :**", entry.sentiment)
+    analysis += _bullet("**Facteur le plus difficile à ignorer :**", entry.hardest_factor)
+    analysis += _bullet("**Décision possible plus tôt ?**", entry.earlier_decision)
+    scores = []
+    if entry.stress:
+        scores.append(f"**Stress :** {entry.stress}/5")
+    if entry.confidence:
+        scores.append(f"**Confiance renforcée :** {entry.confidence}/5")
+    if scores:
+        analysis += "* " + " | ".join(scores) + "\n"
+    return analysis
 
-    front = "---\n"
-    front += f"title: {json.dumps(f'Renoncement du {title_date}', ensure_ascii=False)}\n"
-    front += f"date: {date.isoformat()}\n"
-    summary = build_summary(entry)
-    if summary:
-        front += f"summary: {json.dumps(summary, ensure_ascii=False)}\n"
-    front += "draft: false\n"
-    front += "---\n"
 
+def _render_v1_body(entry: RexEntry) -> str:
     body = f"**Expérience :** {entry.experience or '—'} | **Décision :** {entry.decision or '—'}\n"
 
     context = ""
@@ -298,20 +324,63 @@ def render_markdown(entry: RexEntry) -> str:
     if entry.bilan:
         body += "\n### Bilan\n" + entry.bilan + "\n"
 
-    analysis = ""
-    analysis += _bullet("**Sentiment :**", entry.sentiment)
-    analysis += _bullet("**Facteur le plus difficile à ignorer :**", entry.hardest_factor)
-    analysis += _bullet("**Décision possible plus tôt ?**", entry.earlier_decision)
-    scores = []
-    if entry.stress:
-        scores.append(f"**Stress :** {entry.stress}/5")
-    if entry.confidence:
-        scores.append(f"**Confiance renforcée :** {entry.confidence}/5")
-    if scores:
-        analysis += "* " + " | ".join(scores) + "\n"
+    analysis = _render_analysis(entry)
     if analysis:
         body += "\n### Analyse\n" + analysis
 
+    return body
+
+
+def _checked_factors(cell: str) -> str:
+    """Checkbox items joined for display, minus the 'Non applicable' filler."""
+    return ", ".join(item for item in split_checkboxes(cell) if item != "Non applicable")
+
+
+def _render_v2_body(entry: RexEntry) -> str:
+    body = f"**Expérience :** {entry.experience or '—'} | **Décision :** {entry.decision or '—'}\n"
+
+    if entry.envie:
+        body += "\n### Pourquoi voler ?\n" + entry.envie + "\n"
+
+    body += "\n### Le récit\n" + entry.narrative + "\n"
+
+    if entry.trigger_short:
+        body += "\n### Le déclencheur\n" + entry.trigger_short + "\n"
+
+    if entry.lesson:
+        body += "\n### Qu'en retires-tu ?\n" + entry.lesson + "\n"
+
+    signals = ""
+    signals += _bullet("**Facteurs humains :**", _checked_factors(entry.factors_human))
+    signals += _bullet("**Facteurs sociaux :**", _checked_factors(entry.factors_social))
+    signals += _bullet(
+        "**Facteurs aérologiques & environnement :**",
+        _checked_factors(entry.factors_aero),
+    )
+    if signals:
+        body += "\n### Signaux Faibles\n" + signals
+
+    analysis = _render_analysis(entry)
+    if analysis:
+        body += "\n### Analyse\n" + analysis
+
+    return body
+
+
+def render_markdown(entry: RexEntry) -> str:
+    date = parse_timestamp(entry.timestamp_raw)
+    title_date = entry.flight_date or date.strftime("%d/%m/%Y")
+
+    front = "---\n"
+    front += f"title: {json.dumps(f'Renoncement du {title_date}', ensure_ascii=False)}\n"
+    front += f"date: {date.isoformat()}\n"
+    summary = build_summary(entry)
+    if summary:
+        front += f"summary: {json.dumps(summary, ensure_ascii=False)}\n"
+    front += "draft: false\n"
+    front += "---\n"
+
+    body = _render_v2_body(entry) if entry.is_v2 else _render_v1_body(entry)
     return front + body
 
 

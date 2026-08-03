@@ -62,6 +62,17 @@ Le formulaire existe déjà. À vérifier :
    Éviter aussi les virgules dans les libellés de cases à cocher, sauf entre
    parenthèses.
 
+### Formulaire v2 (2026-08-03)
+
+Le formulaire a changé de structure : un champ libre `Raconte ton renoncement`
+remplace les quatre questions de prose du v1 (plan de vol, détail des signaux,
+déclencheur EXACT, bilan personnel), complété par `Le déclencheur final, en
+une phrase` (accroche des cartes) et `Qu'en retires-tu pour tes prochains
+vols ?` (facultatif). Le script détecte le format ligne par ligne : récit
+libre rempli = gabarit v2, sinon gabarit v1 — les anciens REX restent rendus
+à l'identique pour toujours. C'est pourquoi les colonnes des questions
+supprimées ne doivent **jamais** être effacées de la feuille.
+
 ## B. Formulaire de modération (10 min)
 
 1. Créer un formulaire Google nommé par exemple « Signaler un REX », avec **une
