@@ -6,7 +6,10 @@ name: Sync and deploy
 
 on:
   schedule:
-    - cron: "17 * * * *"
+    # Two slots per hour: GitHub's scheduler is best-effort and sheds cron
+    # slots under load (observed >50% drop rate) — doubling the attempts
+    # halves the average publication delay when slots are skipped.
+    - cron: "17,47 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
