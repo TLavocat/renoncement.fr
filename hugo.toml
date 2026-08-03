@@ -26,6 +26,9 @@ images = ["/img/og.jpg"]
 [params.label]
 text = "Trophée du renoncement"
 
+[params.footer]
+text = "site libre : [code source](https://github.com/TLavocat/renoncement.fr)"
+
 [params.assets]
 favicon = "/favicon.svg"
 

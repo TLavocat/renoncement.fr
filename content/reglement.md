@@ -22,7 +22,7 @@ La licence CC BY-NC engage directement celles et ceux qui réutilisent les réci
 
 **Ce qui n'est jamais concédé : votre identité.** Les récits ne sont exploités que sous forme anonyme. Les adresses e-mail ne servent qu'au tirage au sort, ne sont **jamais vendues ni transmises à quiconque**, et sont purgées un mois après le tirage.
 
-Un récit peut être **retiré du site à tout moment** (voir §2) : le retrait est effectif en une heure au plus, et le site ne conserve pas d'archive des récits retirés. Relisez-vous néanmoins avant d'envoyer : Internet a de la mémoire (caches des moteurs de recherche, archives externes) et ce qui a été lu ne peut pas être « dé-lu ».
+Un récit peut être **retiré du site à tout moment** (voir §2) : le retrait est effectif à la prochaine publication automatique du site, en général sous quelques heures, et le site ne conserve pas d'archive des récits retirés. Relisez-vous néanmoins avant d'envoyer : Internet a de la mémoire (caches des moteurs de recherche, archives externes) et ce qui a été lu ne peut pas être « dé-lu ».
 
 **Ne citez personne de manière reconnaissable** (nom, surnom, détail qui identifie quelqu'un). Toute personne qui se reconnaît dans un récit peut en demander la modification ou le retrait via le lien « Signaler ce REX », même si elle n'en est pas l'auteur.
 
