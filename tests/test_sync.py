@@ -190,6 +190,105 @@ je ne regrette pas d'être allé voir
         assert all(ord(char) < 0x1F000 for char in markdown)
 
 
+def make_raw_v2(**overrides):
+    """A form-v2 row: v1 prose columns empty, v2 columns filled."""
+    v2_values = {
+        "narrative": (
+            "Le plan a changé deux fois : triangle ambitieux, puis aller-retour, "
+            "puis plouf.\nLa vague de pression arrivait plus tôt que prévu."
+        ),
+        "trigger_short": "Le vent est passé travers plein au déco",
+        "lesson": "Décider avant de monter, pas sur le déco.",
+    }
+    v2_values.update({k: overrides.pop(k) for k in list(overrides) if k in v2_values})
+    raw = make_raw(plan="", signals_detail="", trigger="", bilan="", **overrides)
+    raw.update({sync.V2_COLUMNS[logical]: value for logical, value in v2_values.items()})
+    return raw
+
+
+class TestV2Format:
+    def test_dispatch_on_narrative_presence(self):
+        assert sync.parse_row(make_raw()).is_v2 is False
+        assert sync.parse_row(make_raw_v2()).is_v2 is True
+
+    def test_v1_rows_ignore_missing_v2_columns(self):
+        # v1 fixture has no v2 headers at all — parse must not fail.
+        entry = sync.parse_row(make_raw())
+        assert entry.narrative == "" and entry.trigger_short == "" and entry.lesson == ""
+
+    def test_byte_exact_v2_output(self):
+        entry = sync.parse_row(make_raw_v2())
+        expected = f"""---
+title: "Renoncement du 30/07/2026"
+date: 2026-07-31T13:29:39+02:00
+summary: "Débutant (en progression) · Décision collective — « Le vent est passé travers plein au déco »"
+draft: false
+---
+**Expérience :** Débutant (en progression) | **Décision :** Décision collective
+
+### Pourquoi voler ?
+ma première transition chartreuse belledonne
+
+### Le récit
+Le plan a changé deux fois : triangle ambitieux, puis aller-retour, puis plouf.
+La vague de pression arrivait plus tôt que prévu.
+
+### Le déclencheur
+Le vent est passé travers plein au déco
+
+### Qu'en retires-tu ?
+Décider avant de monter, pas sur le déco.
+
+### Signaux Faibles
+* **Facteurs humains :** {REAL_HUMAN_FACTORS}
+* **Facteurs sociaux :** Bruit informationnel (Canal WhatsApp qui s'enflamme, fausses bonnes infos)
+* **Facteurs aérologiques & environnement :** {REAL_AERO_FACTORS}
+
+### Analyse
+* **Sentiment :** Satisfait(e) d'avoir fait le bon choix
+* **Facteur le plus difficile à ignorer :** L'investissement logistique et temps déjà consenti
+* **Décision possible plus tôt ?** Non, la décision devait se prendre au déco.
+* **Stress :** 1/5 | **Confiance renforcée :** 4/5
+"""
+        assert sync.render_markdown(entry) == expected
+
+    def test_v2_summary_uses_short_trigger(self):
+        markdown = sync.render_markdown(sync.parse_row(make_raw_v2()))
+        assert "« Le vent est passé travers plein au déco »" in markdown
+        assert "pravouta" not in markdown.split("---", 2)[1]  # v1 trigger absent from front matter
+
+    def test_v2_summary_falls_back_to_narrative(self):
+        raw = make_raw_v2(trigger_short="")
+        markdown = sync.render_markdown(sync.parse_row(raw))
+        assert "« Le plan a changé deux fois" in markdown
+
+    def test_lesson_section_omitted_when_empty(self):
+        markdown = sync.render_markdown(sync.parse_row(make_raw_v2(lesson="")))
+        assert "Qu'en retires-tu ?" not in markdown
+
+    def test_non_applicable_filtered_in_v2_signals(self):
+        raw = make_raw_v2(factors_social="Non applicable")
+        markdown = sync.render_markdown(sync.parse_row(raw))
+        assert "Facteurs sociaux" not in markdown
+        assert "Non applicable" not in markdown
+
+    def test_narrative_newlines_preserved(self):
+        entry = sync.parse_row(make_raw_v2())
+        assert "\n" in entry.narrative
+
+    def test_mixed_rows_both_formats(self, tmp_path):
+        rows = [make_raw(), make_raw_v2(timestamp="01/08/2026 09:00:00")]
+        entries = [sync.parse_row(r) for r in rows]
+        desired = {
+            sync.compute_rex_id(e.timestamp_raw): sync.render_markdown(e) for e in entries
+        }
+        written, removed = sync.sync_content_dir(desired, tmp_path)
+        assert (written, removed) == (2, 0)
+        contents = [p.read_text(encoding="utf-8") for p in sorted(tmp_path.glob("*.md"))]
+        assert sum("### Le récit" in c for c in contents) == 1
+        assert sum("### Le Contexte" in c for c in contents) == 1
+
+
 class TestSyncContentDir:
     def test_desired_state(self, tmp_path):
         (tmp_path / "_index.md").write_text("index", encoding="utf-8")
