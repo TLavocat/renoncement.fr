@@ -86,12 +86,21 @@ Contact : <a17zf0fse@mozmail.com>, ou via le [dépôt GitHub du site](https://gi
 **Responsable de traitement** : Thomas Lavocat (contact ci-dessus).
 
 * **Ce qui est collecté** : votre récit (publié anonymement) et l'adresse e-mail de votre compte Google — la soumission requiert une connexion Google, qui constitue la barrière anti-spam du site. L'adresse sert à deux choses uniquement : le **tirage au sort** annuel et la **modération** (bannissement en cas d'abus). Elle est purgée un mois après le tirage (sauf adresse liée à un abus avéré, conservée le temps de sa gestion), n'est jamais publiée, jamais vendue ni transmise à quiconque.
-* **Anonymat** : la publication est anonyme ; la soumission ne l'est pas vis-à-vis du mainteneur du site et de Google.
+* **Anonymat** : la publication de votre récit est anonyme ; en revanche la soumission ne l'est pas vis-à-vis du mainteneur du site et de Google, et **commenter ou réagir via Giscus ne l'est pas non plus** (voir « Commentaires » ci-dessous).
 * **Réutilisation des récits** : sous forme anonyme uniquement (publication, synthèses, analyses, projets futurs — voir la licence au [droit de publication](#1-droit-de-publication)).
-* **Cookies** : le site ne dépose aucun cookie et n'embarque aucun outil de mesure d'audience. Commenter passe par le module [giscus](https://giscus.app) (GitHub Discussions) : cela nécessite une connexion à un compte GitHub, soumise aux conditions et à la politique de confidentialité de GitHub.
+* **Cookies** : le site ne dépose aucun cookie et n'embarque aucun outil de mesure d'audience. Les commentaires passent par le module Giscus (voir « Commentaires » ci-dessous).
 * **Vos droits** (RGPD) : accès, rectification, effacement, opposition et limitation. Pour les exercer : e-mail au contact ci-dessus, ou lien « Signaler ce REX » sous chaque récit. Vous pouvez aussi adresser une réclamation à la [CNIL](https://www.cnil.fr).
 * **Personnes citées dans un récit** : si vous vous reconnaissez dans un récit publié, vous pouvez en demander la modification ou le retrait par les mêmes moyens, même si vous n'en êtes pas l'auteur.
-* **Commentaires** : modérés a posteriori via GitHub Discussions ; tout commentaire problématique peut être signalé par e-mail ou via GitHub.
+
+### Commentaires (Giscus)
+
+Les commentaires et réactions sont gérés par **[Giscus](https://giscus.app)**, un outil open-source qui s'appuie sur l'API GitHub Discussions. **Commenter ou réagir n'est pas anonyme** : vous devez volontairement vous connecter à votre compte GitHub et autoriser l'application Giscus — cette action technique constitue votre consentement au traitement de vos données pour cette finalité.
+
+Vos données de profil publiques (nom d'utilisateur, avatar) ainsi que le contenu de vos messages sont traités et stockés **exclusivement par GitHub**. Ce site ne stocke, ne copie ni ne traite aucune de ces données ; il se contente d'afficher la discussion.
+
+**Hébergement et transfert** : l'espace de discussion est hébergé par GitHub, Inc. (88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis) ; les données sont transférées et stockées aux États-Unis. GitHub (groupe Microsoft) adhère au cadre de protection des données UE–États-Unis (*Data Privacy Framework*).
+
+**Vos droits** : vous gardez le contrôle de vos données — vous pouvez modifier ou supprimer vos commentaires à tout moment depuis votre compte GitHub ou depuis le module de commentaires du site. Un commentaire problématique peut aussi être signalé par e-mail ou masqué/supprimé par le mainteneur via les outils GitHub (voir §2).
 
 ### Propriété intellectuelle
 
