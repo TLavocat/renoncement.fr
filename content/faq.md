@@ -7,7 +7,7 @@ cover:
   hidden: false
 ---
 
-*Voir aussi : le [règlement](/reglement/) (droit de publication, modération, tirage au sort) et les [mentions légales](/mentions-legales/).*
+*Voir aussi : le [règlement](/reglement/) (droit de publication, modération, tirage au sort) et les [mentions légales](/reglement/#mentions-legales).*
 
 ## Pourquoi un tirage au sort et pas un concours ?
 
