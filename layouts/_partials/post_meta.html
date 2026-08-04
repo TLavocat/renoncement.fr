@@ -1,10 +1,14 @@
-{{- /* Override of PaperMod's post_meta.html: the date shown is the REX
-       submission date (front-matter `date` = form Horodateur), so it is
-       prefixed with "soumis le " on cards, lists and the single page. */ -}}
+{{- /* Override of PaperMod's post_meta.html: REX footer shows the flight date
+       (front-matter `flightdate`) and the submission date (`date` = Horodateur),
+       both numeric, on cards, lists and the single page. */ -}}
 {{- $scratch := newScratch }}
 
+{{- with .Params.flightdate }}
+    {{- $scratch.Add "meta" (slice (printf "<span>Renoncement du %s</span>" .)) }}
+{{- end }}
+
 {{- if not .Date.IsZero -}}
-    {{- $scratch.Add "meta" (slice (printf "<span title='%s'>soumis le %s</span>" (.Date) (.Date | time.Format (default ":date_long" site.Params.DateFormat)))) }}
+    {{- $scratch.Add "meta" (slice (printf "<span title='%s'>soumis le %s</span>" (.Date) (.Date | time.Format "02/01/2006"))) }}
 {{- end }}
 
 {{- if (.Param "ShowReadingTime") -}}

@@ -35,7 +35,7 @@ PROTECTED = {"_index.md"}
 
 TIMESTAMP_FMT = "%d/%m/%Y %H:%M:%S"  # French sheet locale
 TZ = ZoneInfo("Europe/Paris")
-SUMMARY_TRIGGER_LEN = 100
+CARD_EXCERPT_LEN = 500
 
 # Logical name -> exact sheet header (= form question text). Renaming a form
 # question breaks this mapping; the sync then fails loudly listing both sides.
@@ -266,16 +266,25 @@ def parse_timestamp(timestamp_raw: str) -> datetime:
     return datetime.strptime(timestamp_raw, TIMESTAMP_FMT).replace(tzinfo=TZ)
 
 
-def build_summary(entry: RexEntry) -> str:
-    meta = " · ".join(part for part in (entry.experience, entry.decision) if part)
-    trigger = _single_line(entry.trigger_short or entry.narrative) if entry.is_v2 else _single_line(entry.trigger)
-    if len(trigger) > SUMMARY_TRIGGER_LEN:
-        trigger = trigger[:SUMMARY_TRIGGER_LEN].rstrip() + "…"
-    if meta and trigger:
-        return f"{meta} — « {trigger} »"
-    if trigger:
-        return f"« {trigger} »"
-    return meta
+def trigger_line(entry: RexEntry) -> str:
+    """The one-sentence trigger, used as the title. v2 has a dedicated field;
+    v1 falls back to its déclencheur block collapsed to one line."""
+    return _single_line(entry.trigger_short if entry.is_v2 else entry.trigger)
+
+
+def card_excerpt(entry: RexEntry) -> str:
+    """Plain-text card body: the pilot's own words, capped at CARD_EXCERPT_LEN.
+    The narrative for v2; the joined free-text blocks for v1."""
+    if entry.is_v2:
+        text = entry.narrative
+    else:
+        text = " ".join(
+            t for t in (entry.envie, entry.plan, entry.signals_detail, entry.trigger, entry.bilan) if t
+        )
+    text = _single_line(text)
+    if len(text) > CARD_EXCERPT_LEN:
+        text = text[:CARD_EXCERPT_LEN].rstrip() + "…"
+    return text
 
 
 # Markdown-active ASCII punctuation. A backslash before any ASCII punctuation
@@ -415,14 +424,20 @@ def render_markdown(entry: RexEntry, number: int = 1) -> str:
     # `number` is the REX's stable sequence number (see assign_numbers);
     # defaults to 1 for callers/tests that don't exercise numbering.
     date = parse_timestamp(entry.timestamp_raw)
-    title_date = entry.flight_date or date.strftime("%d/%m/%Y")
+    flightdate = entry.flight_date or date.strftime("%d/%m/%Y")
+
+    # Title = "#N " + the pilot's own trigger sentence (full, evocative). The
+    # flight date moves to the meta footer (post_meta.html override).
+    trigger = trigger_line(entry)
+    title = f"#{number} {trigger}" if trigger else f"#{number} Renoncement du {flightdate}"
 
     front = "---\n"
-    front += f"title: {json.dumps(f'Renoncement n°{number} du {title_date}', ensure_ascii=False)}\n"
+    front += f"title: {json.dumps(title, ensure_ascii=False)}\n"
     front += f"date: {date.isoformat()}\n"
-    summary = build_summary(entry)
-    if summary:
-        front += f"summary: {json.dumps(summary, ensure_ascii=False)}\n"
+    front += f"flightdate: {json.dumps(flightdate, ensure_ascii=False)}\n"
+    excerpt = card_excerpt(entry)
+    if excerpt:
+        front += f"summary: {json.dumps(excerpt, ensure_ascii=False)}\n"
     front += "draft: false\n"
     front += "---\n"
 

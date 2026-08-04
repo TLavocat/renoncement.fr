@@ -1,5 +1,6 @@
 """Offline tests for scripts/sync.py and scripts/draw.py — no network, no Google deps."""
 
+import json
 import sys
 from pathlib import Path
 
@@ -115,10 +116,12 @@ class TestDates:
 class TestRenderMarkdown:
     def test_byte_exact_output(self):
         entry = sync.parse_row(make_raw())
+        summary = json.dumps(sync.card_excerpt(entry), ensure_ascii=False)
         expected = f"""---
-title: "Renoncement n°1 du 30/07/2026"
+title: "#1 le déco + vol du gars de pravouta"
 date: 2026-07-31T13:29:39+02:00
-summary: "Débutant (en progression) · Décision collective — « le déco + vol du gars de pravouta »"
+flightdate: "30/07/2026"
+summary: {summary}
 draft: false
 ---
 **Expérience :** Débutant (en progression) | **Décision :** Décision collective
@@ -159,13 +162,15 @@ je ne regrette pas d'être allé voir
         # strips raw HTML at render time, so it never reaches the page as HTML.
         assert '<script>alert("x")</script>' in markdown
 
-    def test_quotes_in_summary_are_escaped(self):
+    def test_quotes_in_frontmatter_are_escaped(self):
+        # Double quotes in user text are YAML-escaped in the title and summary.
         raw = make_raw(trigger='il a dit "non"')
         markdown = sync.render_markdown(sync.parse_row(raw))
-        assert 'summary: "Débutant (en progression) · Décision collective — « il a dit \\"non\\" »"\n' in markdown
+        assert r'title: "#1 il a dit \"non\""' in markdown
+        assert r'il a dit \"non\"' in markdown.split("summary:")[1].split("\n")[0]
 
-    def test_long_trigger_truncated_in_summary(self):
-        raw = make_raw(trigger="x" * 200)
+    def test_long_excerpt_truncated_in_summary(self):
+        raw = make_raw(bilan="x" * 600)
         markdown = sync.render_markdown(sync.parse_row(raw))
         assert "…" in markdown.split("summary:")[1].split("\n")[0]
 
@@ -246,7 +251,7 @@ class TestNumbering:
 
     def test_number_appears_in_title(self):
         entry = sync.parse_row(make_raw())
-        assert 'title: "Renoncement n°7 du 30/07/2026"' in sync.render_markdown(entry, 7)
+        assert 'title: "#7 le déco + vol du gars de pravouta"' in sync.render_markdown(entry, 7)
 
 
 class TestV2Format:
@@ -264,10 +269,12 @@ class TestV2Format:
         # front matter, which is YAML-escaped and rendered as plain text).
         esc = sync.escape_markdown
         entry = sync.parse_row(make_raw_v2())
+        summary = json.dumps(sync.card_excerpt(entry), ensure_ascii=False)
         expected = f"""---
-title: "Renoncement n°1 du 30/07/2026"
+title: "#1 Le vent est passé travers plein au déco"
 date: 2026-07-31T13:29:39+02:00
-summary: "Débutant (en progression) · Décision collective — « Le vent est passé travers plein au déco »"
+flightdate: "30/07/2026"
+summary: {summary}
 draft: false
 ---
 **Expérience :** {esc("Débutant (en progression)")} | **Décision :** Décision collective
@@ -298,15 +305,19 @@ Le vent est passé travers plein au déco
 """
         assert sync.render_markdown(entry) == expected
 
-    def test_v2_summary_uses_short_trigger(self):
+    def test_v2_title_uses_short_trigger(self):
         markdown = sync.render_markdown(sync.parse_row(make_raw_v2()))
-        assert "« Le vent est passé travers plein au déco »" in markdown
-        assert "pravouta" not in markdown.split("---", 2)[1]  # v1 trigger absent from front matter
+        assert 'title: "#1 Le vent est passé travers plein au déco"' in markdown
 
-    def test_v2_summary_falls_back_to_narrative(self):
+    def test_v2_title_falls_back_when_no_trigger(self):
         raw = make_raw_v2(trigger_short="")
         markdown = sync.render_markdown(sync.parse_row(raw))
-        assert "« Le plan a changé deux fois" in markdown
+        assert 'title: "#1 Renoncement du 30/07/2026"' in markdown
+
+    def test_v2_card_excerpt_is_the_narrative(self):
+        markdown = sync.render_markdown(sync.parse_row(make_raw_v2()))
+        summary_line = markdown.split("summary:")[1].split("\n")[0]
+        assert "Le plan a changé deux fois" in summary_line
 
     def test_lesson_section_omitted_when_empty(self):
         markdown = sync.render_markdown(sync.parse_row(make_raw_v2(lesson="")))
@@ -329,11 +340,14 @@ Le vent est passé travers plein au déco
         assert sync.escape_markdown("\\") == "\\\\"
         assert sync.escape_markdown("été à 2000 m, rien à signaler") == "été à 2000 m, rien à signaler"
 
-    def test_tracking_pixel_markdown_is_inert(self):
+    def test_tracking_pixel_markdown_is_inert_in_body(self):
+        # In the rendered body, image markdown is escaped so no <img> is emitted.
+        # (In the summary it stays raw, but PaperMod renders summaries via
+        # `plainify`, which never interprets markdown — verified by a Hugo build.)
         raw = make_raw_v2(narrative="regarde ![pixel](https://evil.example/p.png) là")
-        markdown = sync.render_markdown(sync.parse_row(raw))
-        assert "![pixel]" not in markdown
-        assert r"\!\[pixel\]" in markdown
+        body = sync.render_markdown(sync.parse_row(raw)).split("### Le récit\n", 1)[1]
+        assert "![pixel]" not in body
+        assert r"\!\[pixel\]" in body
 
     def test_heading_and_emphasis_are_inert(self):
         raw = make_raw_v2(narrative="# faux titre\n**pas gras**")
@@ -342,11 +356,12 @@ Le vent est passé travers plein au déco
         assert r"\# faux titre" in markdown
         assert r"\*\*pas gras\*\*" in markdown
 
-    def test_summary_is_not_escaped(self):
-        # The summary is YAML-escaped plain text, never markdown: no backslashes.
-        raw = make_raw_v2(trigger_short="vent (fort) à l'atterro")
+    def test_summary_is_not_markdown_escaped(self):
+        # The summary is plain text (YAML-escaped only, rendered via plainify),
+        # never markdown: parentheses and apostrophes stay literal, no backslashes.
+        raw = make_raw_v2(narrative="vent (fort) à l'atterro")
         markdown = sync.render_markdown(sync.parse_row(raw))
-        assert "« vent (fort) à l'atterro »" in markdown.split("---", 2)[1]
+        assert 'summary: "vent (fort) à l\'atterro"' in markdown
 
     def test_hostile_payloads_stay_inert_data(self, tmp_path):
         # Classic injection payloads must round-trip as literal text: no
