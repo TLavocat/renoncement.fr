@@ -6,6 +6,10 @@ theme = "PaperMod"
 timeZone = "Europe/Paris"
 enableRobotsTXT = true
 
+# Home also emits JSON — the Fuse.js search index consumed by /search/.
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
 [pagination]
 pagerSize = 10
 
@@ -22,6 +26,14 @@ hideFooter = false
 comments = true
 mainSections = ["rex"]
 images = ["/img/og.jpg"]
+
+# Fuse.js fuzzy search over titles, summaries and full récit content.
+[params.fuseOpts]
+isCaseSensitive = false
+shouldSort = true
+threshold = 0.4
+minMatchCharLength = 2
+keys = ["title", "summary", "content"]
 
 [params.label]
 text = "Trophée du renoncement"
@@ -84,6 +96,10 @@ weight = 30
 name = "FAQ"
 url = "/faq/"
 weight = 35
+[[menus.main]]
+name = "Rechercher"
+url = "/search/"
+weight = 45
 [[menus.main]]
 name = "Mentions légales"
 url = "/mentions-legales/"
