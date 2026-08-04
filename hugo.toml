@@ -39,7 +39,7 @@ keys = ["title", "summary", "content"]
 text = "Trophée du renoncement"
 
 [params.footer]
-text = "site libre : [code source](https://github.com/TLavocat/renoncement.fr)"
+text = "[Règlement](/reglement/) · [Mentions légales](/mentions-legales/) · site libre : [code source](https://github.com/TLavocat/renoncement.fr)"
 
 [params.assets]
 favicon = "/favicon.svg"
@@ -79,35 +79,26 @@ repoID = "R_kgDOTpXgJQ"
 category = "Commentaires"
 categoryID = "DIC_kwDOTpXgJc4DCeaD"
 
+# Top nav kept to four: browse, understand, find, act. The logo already
+# links home (Accueil dropped as redundant); Règlement and Mentions légales
+# move to the footer (params.footer above).
 [menus]
-[[menus.main]]
-name = "Accueil"
-url = "/"
-weight = 10
 [[menus.main]]
 name = "Tous les REX"
 url = "/archives/"
-weight = 20
-[[menus.main]]
-name = "Règlement"
-url = "/reglement/"
-weight = 30
+weight = 10
 [[menus.main]]
 name = "FAQ"
 url = "/faq/"
-weight = 35
+weight = 20
 [[menus.main]]
 name = "Rechercher"
 url = "/search/"
-weight = 45
-[[menus.main]]
-name = "Mentions légales"
-url = "/mentions-legales/"
-weight = 40
+weight = 30
 [[menus.main]]
 name = "Partager mon REX"
 url = "https://docs.google.com/forms/d/e/1FAIpQLSeZn_A5D5QuS-GSy1GMj1vY4FjD_dC77rbGJZ6_91ig134hng/viewform"
-weight = 50
+weight = 40
 
 [markup.goldmark.renderer]
 # Raw HTML in markdown is stripped. REX pages are generated from public form
