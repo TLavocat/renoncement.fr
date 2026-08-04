@@ -116,7 +116,7 @@ class TestRenderMarkdown:
     def test_byte_exact_output(self):
         entry = sync.parse_row(make_raw())
         expected = f"""---
-title: "Renoncement du 30/07/2026"
+title: "Renoncement n°1 du 30/07/2026"
 date: 2026-07-31T13:29:39+02:00
 summary: "Débutant (en progression) · Décision collective — « le déco + vol du gars de pravouta »"
 draft: false
@@ -206,6 +206,49 @@ def make_raw_v2(**overrides):
     return raw
 
 
+class TestNumbering:
+    def entries(self):
+        # three submissions, deliberately out of sheet order by time
+        return [
+            sync.parse_row(make_raw(timestamp="03/08/2026 12:00:00")),  # 3rd chronologically
+            sync.parse_row(make_raw(timestamp="01/08/2026 09:00:00")),  # 1st
+            sync.parse_row(make_raw(timestamp="02/08/2026 15:30:00")),  # 2nd
+        ]
+
+    def test_numbers_follow_chronological_submission(self):
+        nums = sync.assign_numbers(self.entries())
+        assert nums[sync.compute_rex_id("01/08/2026 09:00:00")] == 1
+        assert nums[sync.compute_rex_id("02/08/2026 15:30:00")] == 2
+        assert nums[sync.compute_rex_id("03/08/2026 12:00:00")] == 3
+
+    def test_removing_a_rex_does_not_renumber_others(self):
+        entries = self.entries()
+        full = sync.assign_numbers(entries)
+        # drop the middle one (as if deleted); the others keep their numbers
+        # only when numbering is computed over the SAME full set — which is
+        # exactly what main() does (quarantined rows stay in `entries`).
+        assert full[sync.compute_rex_id("03/08/2026 12:00:00")] == 3
+        without_middle = [e for e in entries if e.timestamp_raw != "02/08/2026 15:30:00"]
+        renumbered = sync.assign_numbers(without_middle)
+        # This documents the one caveat: truly deleting an earlier row shifts
+        # later numbers. Quarantine keeps the row, so this never happens in prod.
+        assert renumbered[sync.compute_rex_id("03/08/2026 12:00:00")] == 2
+
+    def test_new_submission_gets_next_number(self):
+        entries = self.entries()
+        before = sync.assign_numbers(entries)
+        entries.append(sync.parse_row(make_raw(timestamp="04/08/2026 08:00:00")))
+        after = sync.assign_numbers(entries)
+        # existing numbers unchanged, newcomer is last
+        for ts in ("01/08/2026 09:00:00", "02/08/2026 15:30:00", "03/08/2026 12:00:00"):
+            assert before[sync.compute_rex_id(ts)] == after[sync.compute_rex_id(ts)]
+        assert after[sync.compute_rex_id("04/08/2026 08:00:00")] == 4
+
+    def test_number_appears_in_title(self):
+        entry = sync.parse_row(make_raw())
+        assert 'title: "Renoncement n°7 du 30/07/2026"' in sync.render_markdown(entry, 7)
+
+
 class TestV2Format:
     def test_dispatch_on_narrative_presence(self):
         assert sync.parse_row(make_raw()).is_v2 is False
@@ -222,7 +265,7 @@ class TestV2Format:
         esc = sync.escape_markdown
         entry = sync.parse_row(make_raw_v2())
         expected = f"""---
-title: "Renoncement du 30/07/2026"
+title: "Renoncement n°1 du 30/07/2026"
 date: 2026-07-31T13:29:39+02:00
 summary: "Débutant (en progression) · Décision collective — « Le vent est passé travers plein au déco »"
 draft: false

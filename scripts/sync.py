@@ -402,12 +402,23 @@ def _render_analysis_v2(entry: RexEntry) -> str:
     return analysis
 
 
-def render_markdown(entry: RexEntry) -> str:
+def assign_numbers(entries: list[RexEntry]) -> dict[str, int]:
+    """Map rex_id -> its permanent sequence number = chronological rank by
+    submission time. Computed over ALL parsed rows (quarantined included), so
+    removing or restoring a REX never renumbers the others. Pure function of
+    the sheet: no stored counter, matching the stateless model."""
+    ordered = sorted(entries, key=lambda e: parse_timestamp(e.timestamp_raw))
+    return {compute_rex_id(e.timestamp_raw): i for i, e in enumerate(ordered, start=1)}
+
+
+def render_markdown(entry: RexEntry, number: int = 1) -> str:
+    # `number` is the REX's stable sequence number (see assign_numbers);
+    # defaults to 1 for callers/tests that don't exercise numbering.
     date = parse_timestamp(entry.timestamp_raw)
     title_date = entry.flight_date or date.strftime("%d/%m/%Y")
 
     front = "---\n"
-    front += f"title: {json.dumps(f'Renoncement du {title_date}', ensure_ascii=False)}\n"
+    front += f"title: {json.dumps(f'Renoncement n°{number} du {title_date}', ensure_ascii=False)}\n"
     front += f"date: {date.isoformat()}\n"
     summary = build_summary(entry)
     if summary:
@@ -456,8 +467,9 @@ def main() -> None:
         )
         sys.exit(1)
 
+    numbers = assign_numbers(entries)
     desired = {
-        rex_id: render_markdown(entry)
+        rex_id: render_markdown(entry, numbers[rex_id])
         for rex_id, entry in zip(ids, entries)
         if rex_id not in quarantined
     }
