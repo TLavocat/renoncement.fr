@@ -39,7 +39,7 @@ keys = ["title", "summary", "content"]
 text = "Trophée du renoncement"
 
 [params.footer]
-text = "[Règlement](/reglement/) · [Mentions légales](/mentions-legales/) · site libre : [code source](https://github.com/TLavocat/renoncement.fr)"
+text = "[Règlement](/reglement/) · [Mentions légales](/reglement/#mentions-legales) · site libre : [code source](https://github.com/TLavocat/renoncement.fr)"
 
 [params.assets]
 favicon = "/favicon.svg"
