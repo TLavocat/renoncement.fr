@@ -17,6 +17,15 @@
            rel="noopener" target="_blank">Partage ton récit</a>
         <a class="cta-button cta-secondary" href="/reglement/">Règlement du Trophée</a>
     </div>
+    {{- /* Live odds: pool = published REX count (exact while no pilot has 4+
+           récits; a conservative floor thereafter). A first récit = 1 ticket
+           → odds 1/(N+1). No email needed, just the page count. */}}
+    {{- $n := len (where site.RegularPages "Section" "rex") }}
+    {{- if gt $n 0 }}
+    <p class="odds-callout">À ce jour, seulement <strong>{{ $n }}</strong> récit{{ if ne $n 1 }}s{{ end }} en lice. En partageant le tien, tu aurais <strong>1 chance sur {{ add $n 1 }}</strong> de remporter le Trophée.</p>
+    {{- else }}
+    <p class="odds-callout">Aucun récit publié pour l'instant : sois le premier à tenter le Trophée.</p>
+    {{- end }}
     <a class="scroll-hint" href="#recits">Derniers récits ↓</a>
     <div class="entry-content md-content">
         {{ $opts := dict "display" "block" }}
