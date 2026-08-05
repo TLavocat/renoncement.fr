@@ -36,6 +36,7 @@
     {{- end }}
     <div class="odds-callout">
         <p>À ce jour, {{ $count | safeHTML }} en lice. En partageant le tien, tu aurais <strong>1 chance sur {{ add $n 1 }}</strong> de remporter le Trophée.</p>
+        <p class="odds-disclaimer">Chances estimées à cet instant : elles baissent à chaque nouveau récit publié, jusqu'au tirage de début décembre.</p>
         <details class="odds-details">
             <summary>Voir le détail</summary>
             {{- /* Cumulative tickets are degressive (règlement §3); a new pilot's
