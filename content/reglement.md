@@ -39,7 +39,9 @@ Ce site est modéré par la communauté :
 
 ## 3. Tirage au sort
 
-Un **tirage au sort annuel** récompense la participation :
+*Le tirage collecte une adresse e-mail (via ton compte Google) ; le détail du traitement de tes données figure dans les [mentions légales](#mentions-legales), en bas de cette page.*
+
+Un **tirage au sort annuel** — et non un concours ([pourquoi ?](/faq/)) — récompense la participation :
 
 * **Gratuité** : la participation est gratuite et sans obligation d'achat.
 * **Période** : le tirage a lieu chaque année **début décembre** ; participent les récits publiés au cours des douze mois précédents.
