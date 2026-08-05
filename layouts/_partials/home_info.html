@@ -22,7 +22,23 @@
            → odds 1/(N+1). No email needed, just the page count. */}}
     {{- $n := len (where site.RegularPages "Section" "rex") }}
     {{- if gt $n 0 }}
-    <p class="odds-callout">À ce jour, seulement <strong>{{ $n }}</strong> récit{{ if ne $n 1 }}s{{ end }} en lice. En partageant le tien, tu aurais <strong>1 chance sur {{ add $n 1 }}</strong> de remporter le Trophée.</p>
+    <div class="odds-callout">
+        <p>À ce jour, seulement <strong>{{ $n }}</strong> récit{{ if ne $n 1 }}s{{ end }} en lice. En partageant le tien, tu aurais <strong>1 chance sur {{ add $n 1 }}</strong> de remporter le Trophée.</p>
+        <details class="odds-details">
+            <summary>Voir le détail</summary>
+            {{- /* Cumulative tickets are degressive (règlement §3); a new pilot's
+                   probability = tickets / (current pool + tickets), pool = N. */}}
+            <table>
+                <thead><tr><th>Si tu publies</th><th>Tes tickets</th><th>Ta probabilité</th></tr></thead>
+                <tbody>
+                {{- range slice (dict "r" "1 récit" "tk" "1" "t" 1.0) (dict "r" "3 récits" "tk" "3" "t" 3.0) (dict "r" "6 récits" "tk" "4,5" "t" 4.5) (dict "r" "12 récits" "tk" "≈ 5,6" "t" 5.625) }}
+                    <tr><td>{{ .r }}</td><td>{{ .tk }}</td><td>{{ printf "%.0f" (mul 100.0 (div .t (add (add 0.0 $n) .t))) }} %</td></tr>
+                {{- end }}
+                </tbody>
+            </table>
+            <p class="odds-note">Les tickets sont dégressifs, pour que le tirage reste équitable ; le barème complet est dans le <a href="/reglement/#3-tirage-au-sort">règlement du Trophée</a>.</p>
+        </details>
+    </div>
     {{- else }}
     <p class="odds-callout">Aucun récit publié pour l'instant : sois le premier à tenter le Trophée.</p>
     {{- end }}
