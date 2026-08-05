@@ -34,6 +34,24 @@
     display: block;
 }
 
+/* Live odds callout under the home CTA */
+.odds-callout {
+    text-align: center;
+    margin: 4px auto 10px;
+    padding: 10px 18px;
+    max-width: 640px;
+    background: var(--sky-soft);
+    border-radius: 10px;
+    color: var(--sky-deep);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.odds-callout strong {
+    color: var(--sky-deep);
+    white-space: nowrap;
+}
+
 /* Scroll hint under the home CTA */
 .scroll-hint {
     display: block;
