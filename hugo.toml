@@ -14,7 +14,7 @@ home = ["HTML", "RSS", "JSON"]
 pagerSize = 10
 
 [params]
-description = "Récits de renoncement partagés par la communauté du vol libre. Renoncer à un vol n'est jamais un échec."
+description = "Récits de renoncement partagés par des pilotes comme toi. Raconte ton renoncement et tente de gagner une journée de stage SIV."
 defaultTheme = "auto"
 ShowReadingTime = false
 ShowShareButtons = false
@@ -47,11 +47,11 @@ favicon = "/favicon.svg"
 [params.homeInfoParams]
 Title = "Renoncer, c'est aussi piloter"
 Content = """
-Dans le vol libre, décider de ne pas voler est important, parfois vital. Ça fait partie de l'activité, mais ce n'est jamais récompensé.
+Dans le vol libre, décider de ne pas voler c'est important, parfois vital. C'est partie intégrante de l'activité, mais ce n'est jamais récompensé.
 
-Ce site existe pour inverser ça. Partage ton récit de renoncement : le contexte, les signaux faibles, le déclencheur. Chaque récit, publié anonymement, aide tous les pilotes à reconnaître les pièges météo ou psychologiques, et dédramatise le fait de ne pas voler.
+Ce site existe pour inverser ça. Partage ton récit de renoncement et, en remerciement, chacun de tes récits augmente tes chances de remporter le [Trophée du renoncement](/reglement/#3-tirage-au-sort). Le gros lot : une journée de stage SIV remboursée. Une bonne décision au sol, récompensée par de la sécurité active en l'air !
 
-Et chaque année, le **[Trophée du renoncement](/reglement/#3-tirage-au-sort)** : un tirage au sort parmi les récits publiés (ce n'est pas un concours, [c'est voulu](/faq/)) offre une journée de stage SIV. Une bonne décision au sol, récompensée par de la sécurité active en l'air.
+Au plaisir de te lire.
 """
 
 # Moderation report link, rendered in each REX page's meta block
