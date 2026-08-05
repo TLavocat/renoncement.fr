@@ -8,6 +8,8 @@ cover:
   hidden: false
 ---
 
+Cette page couvre le partage des récits (**[1. Droit de publication](#1-droit-de-publication)**), la modération (**[2. Esprit de communauté](#2-esprit-de-communauté-et-zéro-tolérance)**) et le **[Trophée du renoncement](#3-tirage-au-sort)** — le tirage au sort. Les [mentions légales](#mentions-legales) sont en fin de page.
+
 ## 1. Droit de publication
 
 En soumettant le formulaire de partage, vous acceptez la **publication anonyme** de votre récit, et vous certifiez **en être l'auteur·e** : votre propre vécu, avec vos propres mots. Ne soumettez jamais un texte écrit par quelqu'un d'autre.
