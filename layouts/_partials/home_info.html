@@ -22,8 +22,20 @@
            → odds 1/(N+1). No email needed, just the page count. */}}
     {{- $n := len (where site.RegularPages "Section" "rex") }}
     {{- if gt $n 0 }}
+    {{- /* Count phrase adapts to nudge: scarcity when small, social proof when large. */}}
+    {{- $count := "" }}
+    {{- if ge $n 100 }}
+        {{- $r := mul (int (math.Floor (div $n 50))) 50 }}
+        {{- $count = printf "déjà plus de <strong>%d</strong> récits" $r }}
+    {{- else if lt $n 10 }}
+        {{- $count = printf "seulement <strong>%d</strong> récit%s" $n (cond (ne $n 1) "s" "") }}
+    {{- else if lt $n 50 }}
+        {{- $count = printf "<strong>%d</strong> récits" $n }}
+    {{- else }}
+        {{- $count = printf "déjà <strong>%d</strong> récits" $n }}
+    {{- end }}
     <div class="odds-callout">
-        <p>À ce jour, seulement <strong>{{ $n }}</strong> récit{{ if ne $n 1 }}s{{ end }} en lice. En partageant le tien, tu aurais <strong>1 chance sur {{ add $n 1 }}</strong> de remporter le Trophée.</p>
+        <p>À ce jour, {{ $count | safeHTML }} en lice. En partageant le tien, tu aurais <strong>1 chance sur {{ add $n 1 }}</strong> de remporter le Trophée.</p>
         <details class="odds-details">
             <summary>Voir le détail</summary>
             {{- /* Cumulative tickets are degressive (règlement §3); a new pilot's
