@@ -36,7 +36,6 @@
 
 /* Live odds callout under the home CTA */
 .odds-callout {
-    text-align: center;
     margin: 4px auto 10px;
     padding: 10px 18px;
     max-width: 640px;
@@ -47,9 +46,51 @@
     line-height: 1.5;
 }
 
+.odds-callout > p {
+    text-align: center;
+    margin: 0;
+}
+
 .odds-callout strong {
     color: var(--sky-deep);
     white-space: nowrap;
+}
+
+.odds-details {
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.odds-details summary {
+    cursor: pointer;
+    text-align: center;
+    color: var(--sky);
+}
+
+.odds-details table {
+    margin: 10px auto 6px;
+    border-collapse: collapse;
+    background: var(--entry);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.odds-details th,
+.odds-details td {
+    padding: 6px 14px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+}
+
+.odds-details tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.odds-note {
+    text-align: center;
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--secondary);
 }
 
 /* Scroll hint under the home CTA */
