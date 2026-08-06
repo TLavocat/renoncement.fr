@@ -36,10 +36,11 @@
 
 /* Live odds callout under the home CTA */
 .odds-callout {
-    margin: 4px auto 10px;
-    padding: 10px 18px;
+    margin: 16px auto 10px;
+    padding: 12px 18px;
     max-width: 640px;
     background: var(--sky-soft);
+    border: 1px solid var(--tertiary);
     border-radius: 10px;
     color: var(--sky-deep);
     font-size: 15px;
@@ -145,9 +146,18 @@
     flex: 1 1 160px;
     text-align: center;
     padding: 10px 22px;
+    border: 2px solid transparent;
     border-radius: 8px;
     font-weight: 600;
     line-height: 1.4;
+    /* Raised look so these read as buttons, not tabs above the odds panel. */
+    box-shadow: 0 2px 6px rgba(43, 123, 191, 0.18);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 14px rgba(43, 123, 191, 0.28);
 }
 
 .cta-primary {
@@ -160,7 +170,14 @@
     color: #fff;
 }
 
+/* Outlined, not filled — so it doesn't blend with the light-blue odds panel. */
 .cta-secondary {
+    background: var(--theme);
+    border-color: var(--sky);
+    color: var(--sky-deep);
+}
+
+.cta-secondary:hover {
     background: var(--sky-soft);
     color: var(--sky-deep);
 }
