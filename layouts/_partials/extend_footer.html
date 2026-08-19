@@ -1,0 +1,28 @@
+{{- /* Last-updated heartbeat: the build timestamp, rendered relative + absolute
+       client-side in the viewer's timezone so "il y a X" stays accurate (and a
+       stalled pipeline shows "il y a N jours" at a glance). First-party JS,
+       no tracking. Falls back to the static build time without JS. */ -}}
+<p class="last-updated" data-ts="{{ now.Unix }}">Dernière mise à jour le {{ now.Format "02/01/2006" }} à {{ now.Format "15h04" }} UTC.</p>
+<script>
+(function () {
+  var el = document.querySelector(".last-updated");
+  if (!el) return;
+  var ts = parseInt(el.dataset.ts, 10) * 1000;
+  var d = new Date(ts);
+  var p = function (n) { return n < 10 ? "0" + n : "" + n; };
+  var abs = "le " + p(d.getDate()) + "/" + p(d.getMonth() + 1) + "/" + d.getFullYear() +
+            " à " + p(d.getHours()) + "h" + p(d.getMinutes());
+  function render() {
+    var s = Math.max(0, (Date.now() - ts) / 1000), rel;
+    if (s < 60) rel = "il y a " + Math.floor(s) + " s";
+    else if (s < 3600) rel = "il y a " + Math.floor(s / 60) + " min";
+    else if (s < 86400) {
+      var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+      rel = "il y a " + h + " h" + (m ? " " + m + " min" : "");
+    } else rel = "il y a " + Math.floor(s / 86400) + " j";
+    el.textContent = "Dernière mise à jour " + rel + ", " + abs + ".";
+  }
+  render();
+  setInterval(render, 30000);
+})();
+</script>
