@@ -217,3 +217,11 @@
 .first-entry .entry-header h1 {
     color: var(--sky-deep);
 }
+
+/* Last-updated heartbeat in the footer */
+.last-updated {
+    text-align: center;
+    margin: 6px 0 0;
+    font-size: 12px;
+    color: var(--secondary);
+}
