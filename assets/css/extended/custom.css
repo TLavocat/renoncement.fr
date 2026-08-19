@@ -35,20 +35,19 @@
 }
 
 /* Live odds callout under the home CTA */
+/* Left-accent callout (not a filled panel) so it doesn't read as tab content. */
 .odds-callout {
-    margin: 16px auto 10px;
-    padding: 12px 18px;
+    margin: 18px 0 12px;
+    padding: 4px 0 4px 16px;
     max-width: 640px;
-    background: var(--sky-soft);
-    border: 1px solid var(--tertiary);
-    border-radius: 10px;
-    color: var(--sky-deep);
+    border-left: 4px solid var(--sky);
+    color: var(--content);
     font-size: 15px;
     line-height: 1.5;
 }
 
 .odds-callout > p {
-    text-align: center;
+    text-align: left;
     margin: 0;
 }
 
@@ -58,7 +57,7 @@
 }
 
 .odds-disclaimer {
-    text-align: center;
+    text-align: left;
     margin: 6px 0 0;
     font-size: 12.5px;
     font-style: italic;
@@ -72,12 +71,12 @@
 
 .odds-details summary {
     cursor: pointer;
-    text-align: center;
+    text-align: left;
     color: var(--sky);
 }
 
 .odds-details table {
-    margin: 10px auto 6px;
+    margin: 10px 0 6px;
     border-collapse: collapse;
     background: var(--entry);
     border-radius: 8px;
@@ -96,7 +95,7 @@
 }
 
 .odds-note {
-    text-align: center;
+    text-align: left;
     margin: 6px 0 0;
     font-size: 13px;
     color: var(--secondary);
@@ -127,8 +126,8 @@
 /* Home call-to-action buttons */
 .cta-buttons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    flex-direction: column;
+    gap: 10px;
     margin: 12px 0 16px;
 }
 
@@ -142,8 +141,7 @@
 }
 
 .cta-button {
-    display: inline-block;
-    flex: 1 1 160px;
+    display: block;
     text-align: center;
     padding: 10px 22px;
     border: 2px solid transparent;
